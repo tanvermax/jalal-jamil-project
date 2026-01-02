@@ -12,20 +12,33 @@ import { genarateRoutes } from "@/utils/genarateRoutes";
 import { createBrowserRouter } from "react-router";
 import { adminSidebarItem } from "./adminSideberitem";
 import { userSidebarItem } from "./userSIdebarItem";
+import DeluxeError from "@/components/ErrorComponent/Error";
+import ProductDetails from "@/components/layout/HomeLayout/ProductCard/ProductDetails";
+import Shope from "@/components/Shop/Shope";
 
 
 const router = createBrowserRouter([
     {
         Component: App,
+        errorElement: <DeluxeError />,
         path: "/",
         children: [
             {
                 path: "about",
                 Component: About,
-            }, {
+            },
+            {
+                path: "shop",
+                Component: Shope,
+            }, 
+            {
                 path: "/",
                 Component: Home,
             },
+            {
+                path:"product/:id",
+                Component:ProductDetails
+            }
 
         ]
     }
@@ -34,24 +47,37 @@ const router = createBrowserRouter([
         Component: DashbordLayout,
         path: "/admin",
         children: [...genarateRoutes(adminSidebarItem)],
+        errorElement: <DeluxeError />,
+
     },
     {
         Component: DashbordLayout,
         path: "/user",
-        children: [...genarateRoutes(userSidebarItem)]
+        children: [...genarateRoutes(userSidebarItem)],
+        errorElement: <DeluxeError />,
+
+
     },
     {
         Component: Login,
         path: "/login",
+        errorElement: <DeluxeError />,
+
     },
     {
         Component: Register,
         path: "/register",
+        errorElement: <DeluxeError />,
+
     },
     {
         Component: Veryfy,
         path: "/verify",
+        errorElement: <DeluxeError />,
+
     }
+    ,
+    
 
 ])
 

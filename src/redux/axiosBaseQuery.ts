@@ -18,33 +18,26 @@ const axiosBaseQuery =
   > =>
   async ({ url, method, data, params, headers }) => {
     try {
-       const requestHeaders: AxiosRequestConfig['headers'] = { ...headers };
-      
-      if (!(data instanceof FormData)) {
-        // Only set Content-Type for non-FormData requests
-        requestHeaders['Content-Type'] = 'application/json';
-      }
+    
       const result = await axiosInstance({
-        url:  url,
+        url: url,
         method,
         data,
         params,
-        headers:requestHeaders,
-        withCredentials: true, 
-      })
-      // console.log(result)
-      return { data: result.data }
+        headers,
+        
+      });
+      return { data: result.data };
     } catch (axiosError) {
-      const err = axiosError as AxiosError
+      const err = axiosError as AxiosError;
       return {
         error: {
           status: err.response?.status,
           data: err.response?.data || err.message,
         },
-      }
+      };
     }
-  }
-
+  };
 
   export default axiosBaseQuery
 

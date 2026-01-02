@@ -32,11 +32,13 @@ export function CarouselPlugin({imgsizelg, imgsize,data,delayyime }: CarouselPlu
             <CarouselContent className="">
                 {data.map((item, index) => (
                     <CarouselItem key={index} >
-                        <div className="p-1  ">
-                            <Card className="">
-                                <CardContent className="p-1 h-full w-full ">
+                        <div className="  ">
+                            <Card className=" border-none">
+                                <CardContent className="p-1 ">
                                     {/* <span className="text-4xl font-semibold">{item.content}</span> */}
-                                    <img src={item.content} className={`rounded-md ${imgsize} md:${imgsizelg}`} alt="" />
+                                    <img src={item.content}
+                                     className={`rounded-md   ${imgsize} md:${imgsizelg}`}
+                                      alt="" />
                                 </CardContent>
                             </Card>
                         </div>

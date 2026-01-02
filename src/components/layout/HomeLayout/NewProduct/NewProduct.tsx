@@ -71,7 +71,7 @@ import { useAllproductQuery } from "@/redux/features/product/product.api";
 
 export default function NewProduct() {
     const {data} = useAllproductQuery(undefined);
-    console.log(data)
+    console.log(data);
   return (
     <div className="container mx-auto px-4">
         <div className="
