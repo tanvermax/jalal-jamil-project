@@ -15,31 +15,29 @@ import {
 } from "@/components/ui/popover"
 import { ModeToggle } from "./ModeToggler"
 
-import {  useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 import { Link, useLocation } from "react-router"
 import { Input } from "../ui/input"
 import { ArrowDown, Heart, ShoppingCartIcon } from "lucide-react"
 
-// Navigation links array to be used in both desktop and mobile menus
-// const navigationLinks = [
-//   { href: "/", label: "Home" },
-//   { href: "/about", label: "About" },
-//   // { href: "/", label: "Pricing" },
-//   // { href: "#", label: "About" },
-// ]
+
 import {
   Home,
   ShoppingBag,
   Tag,
   Store,
-  // Facebook,
   MapPin,
   Users,
   HelpCircle,
 } from "lucide-react";
+import { useAllOrderQuery } from "@/redux/features/order/Order.api"
+import { Badge } from "../ui/badge"
+import { useEffect, useState } from "react"
 
-// Add a new 'icon' property to each object in the array
+
+
+
 const navigationLinks = [
   { href: "/", label: "Home", active: true, icon: Home },
   { href: "/shop", label: "Shop", icon: ShoppingBag },
@@ -54,21 +52,78 @@ const navigationLinks = [
 
 export default function Navber() {
   const { data } = useUserInfoQuery(undefined);
- 
-   const location = useLocation();
+  // console.log(data.data.email)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: response, isLoading, isFetching, refetch } = useAllOrderQuery(undefined);
 
-  // console.log(data?.data?.email);
 
-  
+  const [cartData, setCartData] = useState({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    orderedItems: [] as any[],
+    totalPrice: 0,
+    status: 'Pending'
+  });
+
+
+  console.log("cartData in navber", cartData?.orderedItems.length)
+
+useEffect(() => {
+    const updateCartView = () => {
+        if (data?.data) {
+            // Logic for Logged in User (From API response)
+            const pendingOrder = response?.data?.find((o: {status:string}) => o.status === 'Pending');
+            if (pendingOrder) {
+                setCartData({
+                    orderedItems: pendingOrder.orderedItems,
+                    totalPrice: pendingOrder.totalPrice,
+                    status: pendingOrder.status
+                });
+            }
+        } else {
+            // Logic for Guest Cart (From LocalStorage)
+            const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const total = localItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+            setCartData({
+                orderedItems: localItems,
+                totalPrice: total,
+                status: 'Pending'
+            });
+        }
+    };
+
+    // Run once on mount or when API data changes
+    updateCartView();
+
+    // LISTEN FOR THE CUSTOM EVENT
+    window.addEventListener('cartUpdated', updateCartView);
+    
+    // Optional: Listen for storage changes in other tabs
+    window.addEventListener('storage', updateCartView);
+
+    return () => {
+        window.removeEventListener('cartUpdated', updateCartView);
+        window.removeEventListener('storage', updateCartView);
+    };
+}, [response, data]); // Keep data/response dependencies for logged-in updates
+
+  const location = useLocation();
+
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  // console.log(response.data[0]?.orderedItems.length);
+
   // if (location.pathname.includes("admin") || location.pathname.includes("user")) {
   //   return null;
-    
+
   // }
   return (
-    <header className=" container mx-auto  px-4 md:px-6">
+    <header className=" mx-auto  px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
@@ -124,7 +179,7 @@ export default function Navber() {
             <a href="#" className="text-primary   hover:text-primary/90">
               <Logo />
             </a>
-         
+
           </div>
         </div>
         <div className="w-2xl max-w-md hidden md:block">
@@ -133,14 +188,23 @@ export default function Navber() {
         {/* Right side */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
+
             <Heart className="hidden md:block" />
-            <ShoppingCartIcon className="text-[#FF781A]" />
+            <Link className="flex items-center relative" to="/cart">
+              <ShoppingCartIcon className="text-[#FF781A]" />
+              <Badge className="bg-primary border-none absolute top-0 -right-5   rounded-full   tabular-nums  transform -translate-x-1/2 -translate-y-1/2" variant="outline">
+                {
+
+                  isFetching ? "." : response?.data[0]?.orderedItems.length ? response?.data[0]?.orderedItems.length : cartData?.orderedItems.length
+                }
+              </Badge>
+            </Link>
             <ModeToggle />
             {/* Info menu */}
             {
               data?.data?.email && (<>
                 <UserMenu userData={data?.data} />
-                </>)
+              </>)
 
             }
             {
@@ -182,11 +246,11 @@ export default function Navber() {
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
-                   );
+                );
               })}
             </NavigationMenuList>
           </NavigationMenu>
-          <Button>Category <ArrowDown/> </Button>
+          <Button>Category <ArrowDown /> </Button>
         </div>
       </div>
     </header>

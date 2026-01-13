@@ -101,11 +101,11 @@ export default function NewProduct() {
             gap-4 md:gap-6 lg:gap-8
             mb-10
         ">
-            {data?.map((product:{ title: string, _id: string, description: string, slug: string, price: string, images: string }) => (
+            {data?.map((product:{ title: string,oldPrice: number, _id: string, description: string, slug: string, price: string, images: string }) => (
                 <ProductCard
                     key={product._id}
                     id={product._id}
-                    description={product.description}
+                    oldPrice={product.oldPrice}
                     name={product.title}
                     price={parseFloat(product.price)}
                     image={product.images}

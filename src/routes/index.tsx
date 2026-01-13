@@ -15,6 +15,7 @@ import { userSidebarItem } from "./userSIdebarItem";
 import DeluxeError from "@/components/ErrorComponent/Error";
 import ProductDetails from "@/components/layout/HomeLayout/ProductCard/ProductDetails";
 import Shope from "@/components/Shop/Shope";
+import CartPage from "@/components/layout/HomeLayout/Cart/Cart";
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: "shop",
                 Component: Shope,
+            }, 
+            {
+                path: "cart",
+                Component: CartPage,
             }, 
             {
                 path: "/",

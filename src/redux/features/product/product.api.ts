@@ -41,18 +41,9 @@ export const productapi = baseApi.injectEndpoints({
       }),
       transformResponse: (arg) => arg.data.data,
     }),
-    Order: builder.mutation({
-      query: (order) => {
-        return {
-          url: '/product/order',
-          method: 'POST',
-          data: order
-        };
-      },
-      invalidatesTags: ['PRODUCT'],
-    }),
+    
   }),
 });
 
 
-export const { useAllproductQuery,useOrderMutation,useProductDetailsQuery, useCreateProductMutation,useDeleteProductMutation } = productapi
+export const { useAllproductQuery,useProductDetailsQuery, useCreateProductMutation,useDeleteProductMutation } = productapi

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router'; // URL থেকে ID নেওয়ার জন্য
+import { useState } from 'react';
+import { useParams } from 'react-router';
 import {
   Check, Minus, Plus, Facebook,
   Twitter, MessageCircle, ChevronLeft,
@@ -7,12 +7,14 @@ import {
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {  useProductDetailsQuery } from '@/redux/features/product/product.api';
+import { useProductDetailsQuery } from '@/redux/features/product/product.api';
 import { useCart } from '@/redux/hooks/useCart';
+import { toast } from 'sonner';
+import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
 
-// ডাটা টাইপ ডিফাইন করা
+
 interface Product {
-  _id: number;
+  _id: string;
   title: string;
   price: number;
   oldPrice: number;
@@ -26,35 +28,43 @@ interface Product {
 }
 
 const ProductDetails = () => {
-  const { id } = useParams<{ id: string }>(); // Route থেকে ID ধরবে
+  const { data: userInfo } = useUserInfoQuery(undefined);
+
+  const { id } = useParams<{ id: string }>();
   const { addToCart, isLoading: isAddingToCart } = useCart();
 
-  const { data, isLoading } = useProductDetailsQuery(id) as { data: Product; isLoading: boolean };
+  const { data, isLoading, refetch } = useProductDetailsQuery(id) as { data: Product; isLoading: boolean, refetch: () => void };
   const [quantity, setQuantity] = useState<number>(1);
   // const [activeImg, setActiveImg] = useState<number>(0);
   // const [product, setProduct] = useState<Product | null>(null);
   // console.log(id);
-  console.log(data);
+  // console.log(data);
 
-  if (!data) return <div className="p-10 text-center">Loading...</div>;
-  if (isLoading) return <div className="p-10 text-center">Loading...</div>;
+  if (isLoading || !data) return <div className="p-10 text-center">Loading...</div>;
 
+
+  // console.log("id loaded:", data);
+  // console.log("Data loaded:", data);
   const discountPercentage = Math.round(((data.oldPrice - data.price) / data.oldPrice) * 100);
 
 
- const handleAddToCart = async () => {
+  const handleAddToCart = async () => {
     try {
       await addToCart({
+        userId: userInfo?.data?._id,
         productId: data._id,
-        quantity: quantity
+        quantity: quantity,
+        price: data.price,
+        title: data.title,
+        images: data.images
       });
-      
+      refetch();
       // Optional: Show success message
-      // toast.success('Product added to cart successfully!');
-      
+      toast('Product added to cart successfully!');
+
       // Optional: Reset quantity
       // setQuantity(1);
-      
+
     } catch (error) {
       // Error is already handled in the hook, but you can add additional handling here
       console.error('Failed to add product to cart:', error);
@@ -62,7 +72,7 @@ const ProductDetails = () => {
     }
   };
   return (
-    <div className="container mx-auto px-4 py-8 bg-white max-w-7xl animate-in fade-in duration-500">
+    <div className="container mx-auto px-4 py-8  max-w-7xl animate-in fade-in duration-500">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
         {/* --- LEFT: GALLERY --- */}
@@ -110,7 +120,7 @@ const ProductDetails = () => {
         {/* --- RIGHT: INFO --- */}
         <div className="flex flex-col space-y-6">
           <header>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-2xl md:text-3xl font-bold  leading-tight">
               {data?.title}
             </h1>
             <div className="flex items-center gap-2 mt-3">
@@ -143,17 +153,17 @@ const ProductDetails = () => {
               </div>
             ))} */}
             <div className="flex gap-3  items-center">
-              <div className="bg-gray-100 rounded-full p-0.5 mt-1">
-                <Check className="h-3.5 w-3.5 text-gray-600" />
+              <div className="bg-gray-100 dark:bg-primary rounded-full p-0.5 mt-1">
+                <Check className="h-3.5 w-3.5 " />
               </div>
-              <p className="text-gray-700 text-[15px]">{data.description}</p>
+              <p className=" text-[15px]">{data.description}</p>
             </div>
           </div>
 
 
           <div className="space-y-3">
-            <h3 className="font-bold text-gray-800 flex items-center gap-2">
-              <Info className="h-4 w-4 text-orange-500" /> এই প্যাকেজে যা যা পাচ্ছেন:
+            <h3 className="font-bold text-primary flex items-center gap-2">
+              <Info className="h-4 w-4 text-primary" /> এই প্যাকেজে যা যা পাচ্ছেন:
             </h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
               {/* {packageContents.map((content, i) => (
@@ -175,32 +185,32 @@ const ProductDetails = () => {
                 <Minus className="h-4 w-4" />
               </button>
               <div className="px-6 font-bold text-lg min-w-[60px] text-center">{quantity}</div>
-              <button  disabled={isAddingToCart}
+              <button disabled={isAddingToCart}
                 onClick={() => setQuantity(q => q + 1)}
                 className="px-4 hover:bg-gray-50 transition-colors h-full"
               >
-               
+
                 <Plus className="h-4 w-4" />
               </button>
             </div>
 
-            <Button 
-            onClick={handleAddToCart} 
-            className="flex-1 h-12 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg shadow-md transition-all active:scale-95"
-            disabled={isAddingToCart}
-          >
-            {isAddingToCart ? 'Adding...' : 'Add to Cart'}
-          </Button>
+            <Button
+              onClick={handleAddToCart}
+              className="flex-1 h-12 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg shadow-md transition-all active:scale-95"
+              disabled={isAddingToCart}
+            >
+              {isAddingToCart ? 'Adding...' : 'Add to Cart'}
+            </Button>
             <Button className="flex-1 h-12 bg-[#ff4d4d] hover:bg-red-600 text-white font-bold text-lg shadow-md transition-all active:scale-95">
               Buy Now
             </Button>
           </div>
 
-          <div className="pt-6 border-t border-gray-100 space-y-3 text-sm text-gray-600">
-            <p><span className="font-bold text-gray-900">CODE:</span> <span className="text-gray-500">{data.sku}</span></p>
-            <p><span className="font-bold text-gray-900">BAND:</span> <span className="text-gray-500">{data.brand}</span></p>
+          <div className="pt-6 border-t border-gray-100 space-y-3 text-sm ">
+            <p><span className="font-bold ">CODE:</span> <span className="">{data.sku}</span></p>
+            <p><span className="font-bold ">BAND:</span> <span className="">{data.brand}</span></p>
             <p>
-              <span className="font-bold text-gray-900">CATEGORY : </span>
+              <span className="font-bold ">CATEGORY : </span>
               {/* {product.category.map((cat, idx) => (
                 <span key={idx} className="text-[#ff7900] ml-1 hover:underline cursor-pointer font-medium">
                   {cat}{idx < product.category.length - 1 ? ',' : ''}
@@ -209,7 +219,7 @@ const ProductDetails = () => {
               {data?.category}
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <span className="font-bold text-gray-900 uppercase tracking-wider text-xs">Share Now:</span>
+              <span className="font-bold  uppercase tracking-wider text-xs">Share Now:</span>
               <div className="flex gap-4">
                 <Facebook className="h-5 w-5 text-[#1877F2] cursor-pointer hover:-translate-y-1 transition-transform" />
                 <MessageCircle className="h-5 w-5 text-[#25D366] cursor-pointer hover:-translate-y-1 transition-transform" />

@@ -3,13 +3,13 @@ import Logo from "@/assets/icons/logo";
 export default function Footer() {
     return (
         <div>
-            <footer className="bg-gray-100">
+            <footer className="">
                 <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
                     <div className="flex justify-center text-teal-600">
                        <Logo/>
                     </div>
 
-                    <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
+                    <p className="mx-auto mt-6 max-w-md text-center leading-relaxed ">
                         Bangladesh's No-1 Trusted Car Accessories store  and Best Car Accessories
                          Online Shop.
                          Luxurious and Exclusive Collection with affordable price.
@@ -17,27 +17,27 @@ export default function Footer() {
 
                     <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> About </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> About </a>
                         </li>
 
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> Careers </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> Careers </a>
                         </li>
 
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> History </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> History </a>
                         </li>
 
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> Services </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> Services </a>
                         </li>
 
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> Projects </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> Projects </a>
                         </li>
 
                         <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="#"> Blog </a>
+                            <a className=" transition hover:text-gray-700/75" href="#"> Blog </a>
                         </li>
                     </ul>
 
