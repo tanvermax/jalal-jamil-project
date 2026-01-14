@@ -16,6 +16,7 @@ import DeluxeError from "@/components/ErrorComponent/Error";
 import ProductDetails from "@/components/layout/HomeLayout/ProductCard/ProductDetails";
 import Shope from "@/components/Shop/Shope";
 import CartPage from "@/components/layout/HomeLayout/Cart/Cart";
+import OrderTrack from "@/pages/User/OrderTrack/Ordertack";
 
 
 const router = createBrowserRouter([
@@ -43,7 +44,12 @@ const router = createBrowserRouter([
             {
                 path:"product/:id",
                 Component:ProductDetails
+            },
+            {
+                path:"ordertrack",
+                Component:OrderTrack
             }
+
 
         ]
     }

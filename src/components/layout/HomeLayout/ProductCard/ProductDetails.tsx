@@ -120,7 +120,7 @@ const ProductDetails = () => {
         {/* --- RIGHT: INFO --- */}
         <div className="flex flex-col space-y-6">
           <header>
-            <h1 className="text-2xl md:text-3xl font-bold  leading-tight">
+            <h1 className="text-md md:text-3xl font-bold  leading-tight">
               {data?.title}
             </h1>
             <div className="flex items-center gap-2 mt-3">
@@ -156,7 +156,7 @@ const ProductDetails = () => {
               <div className="bg-gray-100 dark:bg-primary rounded-full p-0.5 mt-1">
                 <Check className="h-3.5 w-3.5 " />
               </div>
-              <p className=" text-[15px]">{data.description}</p>
+              <p className="text-xs md:text-[15px]">{data.description}</p>
             </div>
           </div>
 

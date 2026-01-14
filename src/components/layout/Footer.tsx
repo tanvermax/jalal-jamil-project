@@ -5,7 +5,7 @@ export default function Footer() {
         <div>
             <footer className="">
                 <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-                    <div className="flex justify-center text-teal-600">
+                    <div className="flex justify-center ">
                        <Logo/>
                     </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
                                 href="#"
                                 rel="noreferrer"
                                 target="_blank"
-                                className="text-gray-700 transition hover:text-gray-700/75"
+                                className="text-primary transition hover:text-gray-700/75"
                             >
                                 <span className="sr-only">Facebook</span>
                                 <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -65,7 +65,7 @@ export default function Footer() {
                                 href="#"
                                 rel="noreferrer"
                                 target="_blank"
-                                className="text-gray-700 transition hover:text-gray-700/75"
+                                className="text-primary transition hover:text-gray-700/75"
                             >
                                 <span className="sr-only">Instagram</span>
                                 <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -83,7 +83,7 @@ export default function Footer() {
                                 href="#"
                                 rel="noreferrer"
                                 target="_blank"
-                                className="text-gray-700 transition hover:text-gray-700/75"
+                                className="text-primary transition hover:text-gray-700/75"
                             >
                                 <span className="sr-only">Twitter</span>
                                 <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -99,7 +99,7 @@ export default function Footer() {
                                 href="#"
                                 rel="noreferrer"
                                 target="_blank"
-                                className="text-gray-700 transition hover:text-gray-700/75"
+                                className="text-primary transition hover:text-gray-700/75"
                             >
                                 <span className="sr-only">GitHub</span>
                                 <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -117,7 +117,7 @@ export default function Footer() {
                                 href="#"
                                 rel="noreferrer"
                                 target="_blank"
-                                className="text-gray-700 transition hover:text-gray-700/75"
+                                className="text-primary transition hover:text-gray-700/75"
                             >
                                 <span className="sr-only">Dribbble</span>
                                 <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

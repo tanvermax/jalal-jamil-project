@@ -98,29 +98,29 @@ export default function UserMenu({ userData }: UserMenuProps) {
           <DropdownMenuItem>
             {/* {
               userData.role === "ADMIN" ? (<> */}
-                {/* <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
+            {/* <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
                 <Link to={"admin/add-product"}>Amin Panel</Link> */}
-              {/* </>) : ""
+            {/* </>) : ""
             }
             { */}
-              {/* userData.role === "USER" ? (<> */}
-                <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-                <Link to={"admin/add-product"}>Dashboard</Link>
-              {/* </>) : ""
+            {/* userData.role === "USER" ? (<> */}
+            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
+            <Link to={"admin/add-product"}>Dashboard</Link>
+            {/* </>) : ""
             } */}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
             <span>favorite</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <Link to={"ordertrack"}> <DropdownMenuItem>
             <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
             <span>Orders History</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem></Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          
+
           <DropdownMenuItem>
             <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
             <span>Account Settings</span>

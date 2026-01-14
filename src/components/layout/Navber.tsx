@@ -67,29 +67,30 @@ export default function Navber() {
 
   console.log("cartData in navber", cartData?.orderedItems.length)
 
-useEffect(() => {
+
+  useEffect(() => {
     const updateCartView = () => {
-        if (data?.data) {
-            // Logic for Logged in User (From API response)
-            const pendingOrder = response?.data?.find((o: {status:string}) => o.status === 'Pending');
-            if (pendingOrder) {
-                setCartData({
-                    orderedItems: pendingOrder.orderedItems,
-                    totalPrice: pendingOrder.totalPrice,
-                    status: pendingOrder.status
-                });
-            }
-        } else {
-            // Logic for Guest Cart (From LocalStorage)
-            const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const total = localItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
-            setCartData({
-                orderedItems: localItems,
-                totalPrice: total,
-                status: 'Pending'
-            });
+      if (data?.data) {
+        // Logic for Logged in User (From API response)
+        const pendingOrder = response?.data?.find((o: { status: string }) => o.status === 'Pending');
+        if (pendingOrder) {
+          setCartData({
+            orderedItems: pendingOrder.orderedItems,
+            totalPrice: pendingOrder.totalPrice,
+            status: pendingOrder.status
+          });
         }
+      } else {
+        // Logic for Guest Cart (From LocalStorage)
+        const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const total = localItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+        setCartData({
+          orderedItems: localItems,
+          totalPrice: total,
+          status: 'Pending'
+        });
+      }
     };
 
     // Run once on mount or when API data changes
@@ -97,15 +98,15 @@ useEffect(() => {
 
     // LISTEN FOR THE CUSTOM EVENT
     window.addEventListener('cartUpdated', updateCartView);
-    
+
     // Optional: Listen for storage changes in other tabs
     window.addEventListener('storage', updateCartView);
 
     return () => {
-        window.removeEventListener('cartUpdated', updateCartView);
-        window.removeEventListener('storage', updateCartView);
+      window.removeEventListener('cartUpdated', updateCartView);
+      window.removeEventListener('storage', updateCartView);
     };
-}, [response, data]); // Keep data/response dependencies for logged-in updates
+  }, [response, data]); // Keep data/response dependencies for logged-in updates
 
   const location = useLocation();
 
@@ -195,7 +196,7 @@ useEffect(() => {
               <Badge className="bg-primary border-none absolute top-0 -right-5   rounded-full   tabular-nums  transform -translate-x-1/2 -translate-y-1/2" variant="outline">
                 {
 
-                  isFetching ? "." : response?.data[0]?.orderedItems.length ? response?.data[0]?.orderedItems.length : cartData?.orderedItems.length
+                  isFetching ? "." : cartData?.orderedItems.length ? cartData?.orderedItems.length : cartData?.orderedItems.length
                 }
               </Badge>
             </Link>

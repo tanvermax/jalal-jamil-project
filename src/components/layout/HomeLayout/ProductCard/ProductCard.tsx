@@ -55,7 +55,7 @@ export default function ProductCard({ id, name, price, oldPrice, image }: produc
     };
 
     return (
-        <div className="card w-full shadow-xl border overflow-hidden flex flex-col h-full">
+        <div className="card w-full shadow-xl border overflow-hidden flex flex-col rounded-md h-full">
             {/* Image */}
             <div className="aspect-square overflow-hidden">
                 <img
@@ -66,12 +66,12 @@ export default function ProductCard({ id, name, price, oldPrice, image }: produc
             </div>
 
             {/* Content */}
-            <div className="card-body p-4 flex flex-col flex-grow">
+            <div className="card-body md:p-4 p-2 flex flex-col flex-grow">
                 <Link to={`/product/${id}`}>
                     <div className="mb-2">
                         <h2
                             ref={textRef}
-                            className={`hover:underline font-semibold  ${!showMore ? 'line-clamp-2' : ''
+                            className={`hover:underline md:text-base text-xs font-semibold  ${!showMore ? 'line-clamp-2' : ''
                                 }`}
                         >
                             {name}
@@ -82,7 +82,7 @@ export default function ProductCard({ id, name, price, oldPrice, image }: produc
                                     e.preventDefault();
                                     setShowMore(!showMore);
                                 }}
-                                className="text-blue-500 text-sm mt-1 hover:underline"
+                                className="text-blue-500 md:text-sm text-xs mt-1 hover:underline"
                             >
                                 {showMore ? 'Show less' : 'Show more'}
                             </button>
@@ -97,7 +97,7 @@ export default function ProductCard({ id, name, price, oldPrice, image }: produc
                             ৳{oldPrice.toFixed(2)}
                         </span>
                     )}
-                    <span className="text-lg font-bold text-red-600">
+                    <span className="md:text-lg text-xs font-bold text-red-600">
                         ৳{price.toFixed(2)}
                     </span>
                 </div>

@@ -9,9 +9,9 @@ export const Orderapi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ['PRODUCT'],
-    //   transformResponse: (arg) => arg.data,
+      //   transformResponse: (arg) => arg.data,
     }),
-   Order: builder.mutation({
+    Order: builder.mutation({
       query: (order) => {
         return {
           url: '/product/order',
@@ -21,8 +21,26 @@ export const Orderapi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['PRODUCT'],
     }),
+    updateOrder: builder.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `/order/${id}`,
+        method: "PATCH",
+        data: updatedData
+      }),
+      invalidatesTags: ['PRODUCT'],
+    }),
+    confirmOrder: builder.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `/order/orderconfirm/${id}`,
+        method: "PATCH",
+        data: updatedData
+      }),
+      invalidatesTags: ['PRODUCT'],
+    }),
+    
+
   }),
 });
 
 
-export const { useAllOrderQuery,useOrderMutation } = Orderapi
+export const { useAllOrderQuery,useUpdateOrderMutation, useOrderMutation,useConfirmOrderMutation } = Orderapi
