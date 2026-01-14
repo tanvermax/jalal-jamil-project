@@ -7,16 +7,20 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAllOrderQuery, useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/order/Order.api';
+import { useAllOrderQuery, useConfirmOrderMutation, useConfirmOrdernonUserMutation, useUpdateOrderMutation } from '@/redux/features/order/Order.api';
 import { toast } from 'sonner';
 import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
 import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router';
 
 const CartPage = () => {
     const { data: userInfo } = useUserInfoQuery(undefined);
     const { data: response, isLoading, refetch } = useAllOrderQuery(undefined);
     const [updateOrder] = useUpdateOrderMutation();
     const [confirmOrder] = useConfirmOrderMutation();
+    const [ confirmOrderNonuser] = useConfirmOrdernonUserMutation();
+    const generateId = () => `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const navigate = useNavigate();
 
     const [cartData, setCartData] = useState({
         _id: "",
@@ -55,7 +59,7 @@ const CartPage = () => {
             const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
             const total = localItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
             setCartData({
-                _id:"localCart",
+                _id: generateId(),
                 orderedItems: localItems,
                 totalPrice: total,
                 status: 'Pending'
@@ -82,9 +86,32 @@ const CartPage = () => {
 
     };
 
-    const handleConfirmOrder = async (formData: any, shippingArea: string, grandTotal: number) => {
+const handleConfirmOrder = async (orderedItems:any,formData: any, shippingArea: string, grandTotal: number) => {
 
-        console.log("formData, shippingArea, grandTotal", formData, shippingArea, grandTotal)
+    // 1. Logic for NON-LOGGED IN (Guest) Users
+    if (!userInfo?.data) {
+        const orderconfirm = await confirmOrderNonuser({
+            id: cartData._id,
+            updatedData: {
+                name: formData.name,
+                phone: formData.phone,
+                address: formData.address,
+                shippingArea,
+                grandTotal,
+                orderedItems,
+                status: "Shipped",
+            },
+        });
+
+        if (orderconfirm) {
+            localStorage.removeItem('guestCart'); 
+            window.dispatchEvent(new Event('cartUpdated'));
+            toast.success(`Order Confirmed!`);
+            navigate("/");
+        }
+    } 
+    // 2. Logic for Logged-in Users
+    else {
         const orderconfirm = await confirmOrder({
             id: cartData._id,
             updatedData: {
@@ -96,11 +123,13 @@ const CartPage = () => {
                 status: "Shipped",
             },
         });
-        console.log(orderconfirm)
+
         if (orderconfirm) {
-            toast.success(`Order Confirmed!`)
+            toast.success(`Order Confirmed!`);
+            navigate("/");
         }
-    };
+    }
+};
 
     const onRemoveItem = async (OrderId: string) => {
 
@@ -304,7 +333,7 @@ const CartPage = () => {
                                 className="w-full py-6 text-lg shadow-lg shadow-primary/20"
                                 size="lg"
                                 disabled={!isFormValid || cartData.orderedItems.length === 0}
-                                onClick={() => handleConfirmOrder(formData, shippingArea, grandTotal)}
+                                onClick={() => handleConfirmOrder(cartData.orderedItems, formData, shippingArea, grandTotal)}
                             >
                                 Confirm Order
                                 <ChevronRight className="ml-2 h-5 w-5" />

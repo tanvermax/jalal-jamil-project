@@ -37,10 +37,18 @@ export const Orderapi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['PRODUCT'],
     }),
+    confirmOrdernonUser: builder.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `/order/orderconfirmnonuser/${id}`,
+        method: "PATCH",
+        data: updatedData
+      }),
+      invalidatesTags: ['PRODUCT'],
+    }),
     
 
   }),
 });
 
 
-export const { useAllOrderQuery,useUpdateOrderMutation, useOrderMutation,useConfirmOrderMutation } = Orderapi
+export const { useAllOrderQuery,useUpdateOrderMutation, useOrderMutation,useConfirmOrderMutation,useConfirmOrdernonUserMutation } = Orderapi
