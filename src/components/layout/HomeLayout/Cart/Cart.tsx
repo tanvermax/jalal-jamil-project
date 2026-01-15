@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAllOrderQuery, useConfirmOrderMutation, useConfirmOrdernonUserMutation, useUpdateOrderMutation } from '@/redux/features/order/Order.api';
+import { useAllOrderQuery, useConfirmOrderMutation, useConfirmOrdernonUserMutation, useDeleteOrderMutation, useUpdateOrderMutation } from '@/redux/features/order/Order.api';
 import { toast } from 'sonner';
 import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,8 @@ const CartPage = () => {
     const { data: response, isLoading, refetch } = useAllOrderQuery(undefined);
     const [updateOrder] = useUpdateOrderMutation();
     const [confirmOrder] = useConfirmOrderMutation();
-    const [ confirmOrderNonuser] = useConfirmOrdernonUserMutation();
+    const [deleteOrder] = useDeleteOrderMutation();
+    const [confirmOrderNonuser] = useConfirmOrdernonUserMutation();
     const generateId = () => `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const CartPage = () => {
         totalPrice: 0,
         status: 'Pending'
     });
-    console.log(cartData)
+    // console.log(cartData)
     const [shippingArea, setShippingArea] = useState<"inside" | "outside">("inside");
     const [formData, setFormData] = useState({
         name: "",
@@ -70,74 +71,139 @@ const CartPage = () => {
 
 
     const onUpdateQuantity = async (OrderId: string, newQuantity: number, productId: string) => {
+        if (newQuantity < 1) return;
 
-        const item = cartData.orderedItems.find(item => item.product._id === productId);
+        if (!userInfo?.data) {
 
-        if (!item) return;
+            const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
+            console.log("localItems", localItems);
+            console.log("productId", productId);
 
-        toast(`Updating quantity for ${item.product.title} to ${newQuantity}`);
-        const updatedOrder = await updateOrder({ id: OrderId, updatedData: { quantity: newQuantity, productId: productId } })
-        refetch()
-        // console.log(updatedOrder?.data)
-        if (updatedOrder?.data?.message === "Order data updated !") {
-            toast.success(`Updated quantity for ${item.product.title} to ${newQuantity}`);
+            const updatedItems = localItems.map((item: any) => {
+                if (item._id === productId) { // OrderId here refers to the specific item's ID
+                    return { ...item, quantity: newQuantity };
+                }
+                return item;
+            });
 
+            // Save updated list to localStorage
+            localStorage.setItem('guestCart', JSON.stringify(updatedItems));
+
+            // Recalculate total price
+            const newTotal = updatedItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+
+            // Update React State to refresh UI
+            setCartData(prev => ({
+                ...prev,
+                orderedItems: updatedItems,
+                totalPrice: newTotal
+            }));
+
+            toast.success(`Quantity updated ${productId} to ${newQuantity}`);
+        }
+        else {
+            const item = cartData.orderedItems.find(item => item.product._id === productId);
+
+            if (!item) return;
+
+            // toast(`...`);
+            const updatedOrder = await updateOrder({ id: OrderId, updatedData: { quantity: newQuantity, productId: productId } })
+            refetch()
+            // console.log(updatedOrder?.data)
+            if (updatedOrder?.data?.message === "Order data updated !") {
+                toast.success(`Updated quantity for ${item.product.title} to ${newQuantity}`);
+
+            }
         }
 
     };
 
-const handleConfirmOrder = async (orderedItems:any,formData: any, shippingArea: string, grandTotal: number) => {
+    const handleConfirmOrder = async (orderedItems: any, formData: any, shippingArea: string, grandTotal: number) => {
 
-    // 1. Logic for NON-LOGGED IN (Guest) Users
-    if (!userInfo?.data) {
-        const orderconfirm = await confirmOrderNonuser({
-            id: cartData._id,
-            updatedData: {
-                name: formData.name,
-                phone: formData.phone,
-                address: formData.address,
-                shippingArea,
-                grandTotal,
-                orderedItems,
-                status: "Shipped",
-            },
-        });
+        // 1. Logic for NON-LOGGED IN (Guest) Users
+        if (!userInfo?.data) {
+            const orderconfirm = await confirmOrderNonuser({
+                id: cartData._id,
+                updatedData: {
+                    name: formData.name,
+                    phone: formData.phone,
+                    address: formData.address,
+                    shippingArea,
+                    grandTotal,
+                    orderedItems,
+                    status: "Shipped",
+                },
+            });
 
-        if (orderconfirm) {
-            localStorage.removeItem('guestCart'); 
+            if (orderconfirm) {
+                localStorage.removeItem('guestCart');
+                window.dispatchEvent(new Event('cartUpdated'));
+                toast.success(`Order Confirmed!`);
+                navigate("/");
+            }
+        }
+        // 2. Logic for Logged-in Users
+        else {
+            const orderconfirm = await confirmOrder({
+                id: cartData._id,
+                updatedData: {
+                    name: formData.name,
+                    phone: formData.phone,
+                    address: formData.address,
+                    shippingArea,
+                    grandTotal,
+                    status: "Shipped",
+                },
+            });
+
+            if (orderconfirm) {
+                toast.success(`Order Confirmed!`);
+                navigate("/");
+            }
+        }
+    };
+
+    const onRemoveItem = async (itemId: string, orderId: string) => {
+
+        if (!userInfo?.data) {
+            // Get current items from localStorage
+            const localItems = JSON.parse(localStorage.getItem('guestCart') || '[]');
+
+            // Filter out the item with the matching ID
+            const updatedItems = localItems.filter((item: any) => item._id !== itemId);
+
+            // Update localStorage
+            localStorage.setItem('guestCart', JSON.stringify(updatedItems));
+
+            // Calculate new total price
+            const newTotal = updatedItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+
+            // Update local state so the UI refreshes
+            setCartData(prev => ({
+                ...prev,
+                orderedItems: updatedItems,
+                totalPrice: newTotal
+            }));
+
+            // Optional: Trigger event for other components (like a Navbar badge)
             window.dispatchEvent(new Event('cartUpdated'));
-            toast.success(`Order Confirmed!`);
-            navigate("/");
+
+            toast.success("Item removed from cart");
         }
-    } 
-    // 2. Logic for Logged-in Users
-    else {
-        const orderconfirm = await confirmOrder({
-            id: cartData._id,
-            updatedData: {
-                name: formData.name,
-                phone: formData.phone,
-                address: formData.address,
-                shippingArea,
-                grandTotal,
-                status: "Shipped",
-            },
-        });
+        // 2. Logic for Logged-in Users (API Call)
+        else {
 
-        if (orderconfirm) {
-            toast.success(`Order Confirmed!`);
-            navigate("/");
+            const res = await deleteOrder({ id: orderId, updatedData: { productId: itemId } });
+            refetch()
+            console.log(res?.data)
+            if (res?.data) {
+                toast(` ${itemId} ${res?.data.message}`);
+            }
         }
-    }
-};
-
-    const onRemoveItem = async (OrderId: string) => {
-
-        toast(`Removing item ${OrderId}`);
-        // Implementation logic...
     };
 
-    if (isLoading) return <CartLoadingSkeleton />;
+    if (isLoading)
+        return <CartLoadingSkeleton />;
 
     if (!cartData.orderedItems.length) {
         return <EmptyCartView />;
@@ -163,24 +229,24 @@ const handleConfirmOrder = async (orderedItems:any,formData: any, shippingArea: 
                                 <div key={item._id} className="p-2 space-y-2">
                                     <div className="flex gap-4">
                                         <img
-                                            src={item?.product?.images}
-                                            alt={item?.product?.title}
+                                            src={item?.product?.images ? item.product?.images : item.images}
+                                            alt={item.product?.title ? item.product?.title : item.title}
                                             className="w-20 h-20 object-cover rounded-lg border"
                                         />
                                         <div className="flex-1">
-                                            <h3 className="font-medium text-sm line-clamp-2">{item?.product?.title}</h3>
-                                            <p className="text-xs text-muted-foreground">{item.product?.category}</p>
+                                            <h3 className="font-medium text-sm line-clamp-2">{item.product?.title ? item.product?.title : item.title}</h3>
+                                            <p className="text-xs text-muted-foreground">{item?.product?.category ? item?.product?.category : item.category}</p>
 
                                             <p className="text-primary font-bold mt-1">৳{item.price.toLocaleString()}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center border rounded-md">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?.orderedItems?.[0].product._id, item.quantity - 1, item?.product?._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity - 1, item?.product?._id ? item?.product?._id : item._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
                                             <span className="w-8 text-center text-sm">{item.quantity}</span>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?.orderedItems?.[0].product._id, item.quantity + 1, item?.product?._id)}><Plus className="h-3 w-3" /></Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity + 1, item?.product?._id ? item?.product?._id : item._id)}><Plus className="h-3 w-3" /></Button>
                                         </div>
-                                        <Button variant="ghost" size="icon" className="text-red-500" onClick={() => onRemoveItem(item?.product?._id)}><Trash2 className="h-4 w-4" /></Button>
+                                        <Button variant="ghost" size="icon" className="text-red-500" onClick={() => onRemoveItem(item?.product?._id ? item?.product?._id : item._id, cartData._id)}><Trash2 className="h-4 w-4" /></Button>
                                     </div>
                                 </div>
                             ))}
@@ -198,13 +264,13 @@ const handleConfirmOrder = async (orderedItems:any,formData: any, shippingArea: 
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {cartData.orderedItems.map((item: any) => (
-                                        <TableRow key={item._id}>
+                                    {cartData.orderedItems.map((item: any, index) => (
+                                        <TableRow key={item._id + index}>
                                             <TableCell>
                                                 <div className="flex items-center gap-4">
                                                     <img
-                                                        src={item.product?.images ? item.product?.images : item.images}
-                                                        alt={item.product?.title}
+                                                        src={item?.product?.images ? item.product?.images : item.images}
+                                                        alt={item?.product?.title}
                                                         className="w-16 h-16 object-cover rounded border bg-white"
                                                     />
                                                     <div className="max-w-[300px]">
@@ -216,16 +282,16 @@ const handleConfirmOrder = async (orderedItems:any,formData: any, shippingArea: 
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex items-center justify-center gap-3">
-                                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity - 1, item?.product?._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
+                                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity - 1, item?.product?._id ? item?.product?._id : item._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
                                                     <span className="font-bold">{item.quantity}</span>
-                                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity + 1, item?.product?._id)}><Plus className="h-3 w-3" /></Button>
+                                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity + 1, item?.product?._id ? item?.product?._id : item._id)}><Plus className="h-3 w-3" /></Button>
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-right font-bold text-lg">
                                                 ৳{(item.price * item.quantity).toLocaleString()}
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <Button variant="ghost" size="icon" className="hover:bg-red-50 text-red-500" onClick={() => onRemoveItem(item?.product?._id)}><Trash2 className="h-4 w-4" /></Button>
+                                                <Button variant="ghost" size="icon" className="hover:bg-red-50 text-red-500" onClick={() => onRemoveItem(item?.product?._id ? item?.product?._id : item._id, cartData._id)}><Trash2 className="h-4 w-4" /></Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
