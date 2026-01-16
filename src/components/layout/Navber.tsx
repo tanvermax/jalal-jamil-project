@@ -19,14 +19,16 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 import { Link, useLocation } from "react-router"
 import { Input } from "../ui/input"
-import { ArrowDown, Heart, ShoppingCartIcon } from "lucide-react"
+import { 
+  // ArrowDown,
+   Heart, ShoppingCartIcon } from "lucide-react"
 
 
 import {
   Home,
   ShoppingBag,
-  Tag,
-  Store,
+  // Tag,
+  // Store,
   MapPin,
   Users,
   HelpCircle,
@@ -41,8 +43,8 @@ import { useEffect, useState } from "react"
 const navigationLinks = [
   { href: "/", label: "Home", active: true, icon: Home },
   { href: "/shop", label: "Shop", icon: ShoppingBag },
-  { href: "/offers", label: "Offers", icon: Tag },
-  { href: "/brands", label: "Brands", icon: Store },
+  // { href: "/offers", label: "Offers", icon: Tag },
+  // { href: "/brands", label: "Brands", icon: Store },
   // { href: "/facebook", label: "Facebook", icon: Facebook },
   { href: "/ordertrack", label: "Order Tracking", icon: MapPin },
   { href: "/about", label: "About Us", icon: Users },
@@ -79,6 +81,7 @@ export default function Navber() {
             totalPrice: pendingOrder.totalPrice,
             status: pendingOrder.status
           });
+          refetch();
         }
       } else {
         // Logic for Guest Cart (From LocalStorage)
@@ -106,7 +109,7 @@ export default function Navber() {
       window.removeEventListener('cartUpdated', updateCartView);
       window.removeEventListener('storage', updateCartView);
     };
-  }, [response, data]); // Keep data/response dependencies for logged-in updates
+  }, [response, data, refetch]); // Keep data/response dependencies for logged-in updates
 
   const location = useLocation();
 
@@ -251,7 +254,7 @@ export default function Navber() {
               })}
             </NavigationMenuList>
           </NavigationMenu>
-          <Button>Category <ArrowDown /> </Button>
+          {/* <Button>Category <ArrowDown /> </Button> */}
         </div>
       </div>
     </header>

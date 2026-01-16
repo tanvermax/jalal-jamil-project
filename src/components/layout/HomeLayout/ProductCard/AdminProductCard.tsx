@@ -32,13 +32,13 @@ export default function AdminProductCard({
     };
 
     return (
-        <div className="card w-full bg-base-100 shadow-xl border overflow-hidden">
+        <div className="card  bg-base-100 shadow-xl border overflow-hidden">
             <img
                 src={images}
                 alt={name}
-                width={300}
-                height={300}
-                className="w-full h-auto object-cover"
+                width={400}
+                height={400}
+                className="w-full h-[20vh] "
             />
             <div className="card-body p-4">
                 <h2 className="card-title text-sm">{name}</h2>
@@ -53,7 +53,7 @@ export default function AdminProductCard({
                         ${price.toFixed(2)}
                     </span>
                 </div>
-                <div className="card-actions justify-between mt-2">
+                <div className="card-actions flex justify-between mt-2">
                     <Button 
                         className="btn btn-sm btn-primary"
                     >

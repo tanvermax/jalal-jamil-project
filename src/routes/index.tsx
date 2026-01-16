@@ -17,6 +17,7 @@ import ProductDetails from "@/components/layout/HomeLayout/ProductCard/ProductDe
 import Shope from "@/components/Shop/Shope";
 import CartPage from "@/components/layout/HomeLayout/Cart/Cart";
 import OrderTrack from "@/pages/User/OrderTrack/Ordertack";
+import Help from "@/pages/Help/Help";
 
 
 const router = createBrowserRouter([
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             {
                 path:"ordertrack",
                 Component:OrderTrack
+            },
+            {
+                path:"help",
+                Component:Help
             }
 
 

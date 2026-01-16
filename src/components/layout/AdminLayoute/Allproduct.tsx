@@ -53,16 +53,16 @@ export default function Allproduct() {
           <Dialog>
             <form>
               <DialogTrigger asChild>
-                <Button className="bg-primary" variant="outline">Add peoduct</Button>
+                <Button className="bg-primary" variant="outline">Add product</Button>
               </DialogTrigger>
-              <DialogContent className="">
+              <DialogContent className="overflow-y-auto max-h-[80vh] w-full sm:w-3/4 lg:w-2/4">
                 <ProductAddForm />
 
               </DialogContent>
             </form>
           </Dialog>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
 
           {data?.map((invoice: { title: string, _id: string, description: string, slug: string, price: string, images: string }) => (
 

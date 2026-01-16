@@ -4,18 +4,18 @@ export default function Footer() {
     return (
         <div>
             <footer className="">
-                <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-5xl px-4 md:py-8 py-4 sm:px-6 lg:px-8">
                     <div className="flex justify-center ">
-                       <Logo/>
+                        <Logo />
                     </div>
 
-                    <p className="mx-auto mt-6 max-w-md text-center leading-relaxed ">
+                    <p className="mx-auto mt-6 max-w-md text-center text-xs md:text-base  leading-relaxed ">
                         Bangladesh's No-1 Trusted Car Accessories store  and Best Car Accessories
-                         Online Shop.
-                         Luxurious and Exclusive Collection with affordable price.
+                        Online Shop.
+                        Luxurious and Exclusive Collection with affordable price.
                     </p>
 
-                    <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
+                    <ul className="md:mt-12 text-xs md:text-base mt-5 flex flex-wrap justify-center gap-4 md:gap-8 lg:gap-12">
                         <li>
                             <a className=" transition hover:text-gray-700/75" href="#"> About </a>
                         </li>
@@ -130,6 +130,20 @@ export default function Footer() {
                             </a>
                         </li>
                     </ul>
+                </div>
+                <div className=" border-t py-6 mt-10">
+                    <div className="container mx-auto gap-3 flex flex-col md:flex-row justify-between items-center md:text-sm text-xs text-muted-foreground">
+                        <p>© 2026 JCS Trading. All rights reserved.</p>
+                        <p className="text-center">
+                            Designed & Developed by{" "}
+                            <a
+                                href="https://portfolio-e021a.web.app"
+                                className="font-medium text-primary hover:underline underline-offset-4"
+                            >
+                               Shafayet_Hossain_Tanvir
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>
