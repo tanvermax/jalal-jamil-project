@@ -19,10 +19,11 @@ export default function Home() {
     <div>
       <Banners />
      <Flashsale/>
+     <NewProduct/>
      <TopBrands/>
      <TopCategroy/>
      <TradingProduct/>
-     <NewProduct/>
+     
 
     </div>
   );

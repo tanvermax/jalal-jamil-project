@@ -39,20 +39,20 @@ export default function ProductCard({ id, name, price, oldPrice, image }: produc
     const { data: userInfo } = useUserInfoQuery(undefined);
 
     const handleAddToCart = async () => {
-        try {
-            await addToCart({
-                productId: id,
-                quantity: 1,
-                userId: userInfo?.data?._id,
-                price: price,
-                title: name,
-                images: image
-            });
-            toast('Product added to cart successfully!');
-        } catch (error) {
-            console.error('Failed to add product to cart:', error);
-        }
-    };
+    try {
+        await addToCart({
+            productId: id, // This is now "Product ID" from Daraz
+            quantity: 1,
+            userId: userInfo?.data?._id,
+            price: price,
+            title: name,
+            images: image
+        });
+        toast('Product added to cart successfully!');
+    } catch (error) {
+        console.error('Failed to add product to cart:', error);
+    }
+};
 
     return (
         <div className="card w-full shadow-xl border overflow-hidden flex flex-col rounded-md h-full">

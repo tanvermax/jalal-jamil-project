@@ -19,9 +19,10 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 import { Link, useLocation } from "react-router"
 import { Input } from "../ui/input"
-import { 
+import {
   // ArrowDown,
-   Heart, ShoppingCartIcon } from "lucide-react"
+  Heart, ShoppingCartIcon
+} from "lucide-react"
 
 
 import {
@@ -36,6 +37,7 @@ import {
 import { useAllOrderQuery } from "@/redux/features/order/Order.api"
 import { Badge } from "../ui/badge"
 import { useEffect, useState } from "react"
+import { Spinner } from "../ui/spinner"
 
 
 
@@ -114,9 +116,9 @@ export default function Navber() {
   const location = useLocation();
 
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>
+  // }
   // console.log(response.data[0]?.orderedItems.length);
 
   // if (location.pathname.includes("admin") || location.pathname.includes("user")) {
@@ -198,21 +200,22 @@ export default function Navber() {
               <ShoppingCartIcon className="text-[#FF781A]" />
               <Badge className="bg-primary border-none absolute top-0 -right-5   rounded-full   tabular-nums  transform -translate-x-1/2 -translate-y-1/2" variant="outline">
                 {
-
-                  isFetching ? "." : cartData?.orderedItems.length ? cartData?.orderedItems.length : cartData?.orderedItems.length
+                  isLoading || isFetching ? <Spinner /> : cartData?.orderedItems.length ? cartData?.orderedItems.length : cartData?.orderedItems.length
                 }
               </Badge>
             </Link>
             <ModeToggle />
             {/* Info menu */}
             {
-              data?.data?.email && (<>
+              isLoading || isFetching ? <Spinner /> : data?.data?.email && (<>
                 <UserMenu userData={data?.data} />
               </>)
 
             }
             {
-              !data?.data?.email && <Button asChild className="text-sm">
+              !data?.data?.email
+              &&
+              <Button asChild className="text-sm">
                 <Link to="/login">Login</Link>
               </Button>
             }

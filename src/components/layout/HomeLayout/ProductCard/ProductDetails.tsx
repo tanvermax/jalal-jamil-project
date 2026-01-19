@@ -201,9 +201,9 @@ const ProductDetails = () => {
             >
               {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </Button>
-            <Button className="flex-1 h-12 bg-[#ff4d4d] hover:bg-red-600 text-white font-bold text-lg shadow-md transition-all active:scale-95">
+            {/* <Button className="flex-1 h-12 bg-[#ff4d4d] hover:bg-red-600 text-white font-bold text-lg shadow-md transition-all active:scale-95">
               Buy Now
-            </Button>
+            </Button> */}
           </div>
 
           <div className="pt-6 border-t border-gray-100 space-y-3 text-sm ">

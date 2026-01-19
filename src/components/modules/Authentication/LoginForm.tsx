@@ -17,24 +17,26 @@ export function LoginForm({
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
+  // const date = new Date();
+  // console.log("date",date)
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const date  = new Date();
+    console.log("date",date)
     try {
       const res = await login(data).unwrap();
       console.log(res)
       navigate("/")
-      toast("Event has been created", {
-        description: "Sunday, December 03, 2023 at 9:00 AM",
+      toast("Login successful", {
+        description: `Welcome back, ${res?.data?.user?.email}. Logged in at ${date.toLocaleString()}`,
         action: {
           label: "Undo",
           onClick: () => console.log("Undo"),
         },
-
       })
       // navigate("/")
 
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err : any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err)
       if (err.data.message === "User does not exist") {
         toast.error(err.data.message);
@@ -51,7 +53,7 @@ export function LoginForm({
 
           navigate("/verify", { state: data.email })
         }
-      
+
     }
   }
   /* http://localhost:5000/api/v1/auth/google/ */
