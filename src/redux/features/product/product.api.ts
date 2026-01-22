@@ -41,16 +41,16 @@ export const productapi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['PRODUCT'],
     }),
-    productDetails: builder.query({
+    pricestockDetails: builder.query({
       query: (id) => ({
-        url: `/product/${id}`,
+        url: `/pricestocks/${id}`,
         method: "GET",
       }),
-      transformResponse: (arg) => arg.data.data,
+      // transformResponse: (arg) => arg.data.data,
     }),
     
   }),
 });
 
 
-export const { useAllpstockQuery,useAllproductQuery,useProductDetailsQuery, useCreateProductMutation,useDeleteProductMutation } = productapi
+export const { useAllpstockQuery,useAllproductQuery,usePricestockDetailsQuery, useCreateProductMutation,useDeleteProductMutation } = productapi

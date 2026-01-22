@@ -68,7 +68,8 @@ const CartPage = () => {
         }
     }, [response, userInfo]);
 
-
+    // console.log("response",response.data.map(orderedItems))
+    console.log(cartData.orderedItems.map(item => item.product))
 
     const onUpdateQuantity = async (OrderId: string, newQuantity: number, productId: string) => {
         if (newQuantity < 1) return;
@@ -134,8 +135,9 @@ const CartPage = () => {
                     status: "Shipped",
                 },
             });
+            console.log(orderconfirm.data)
 
-            if (orderconfirm) {
+            if (orderconfirm.data) {
                 localStorage.removeItem('guestCart');
                 window.dispatchEvent(new Event('cartUpdated'));
                 toast.success(`Order Confirmed!`);
@@ -225,31 +227,34 @@ const CartPage = () => {
 
                         {/* Mobile View Card List */}
                         <div className="md:hidden divide-y">
-                            {cartData.orderedItems.map((item: any) => (
-                                <div key={item._id} className="p-2 space-y-2">
-                                    <div className="flex gap-4">
-                                        <img
-                                            src={item?.product?.images ? item.product?.images : item.images}
-                                            alt={item.product?.title ? item.product?.title : item.title}
-                                            className="w-20 h-20 object-cover rounded-lg border"
-                                        />
-                                        <div className="flex-1">
-                                            <h3 className="font-medium text-sm line-clamp-2">{item.product?.title ? item.product?.title : item.title}</h3>
-                                            <p className="text-xs text-muted-foreground">{item?.product?.category ? item?.product?.category : item.category}</p>
+                            {cartData.orderedItems.map((item: any, index: number) => {
+                                const productName = item.product?.["*Product Name(English)"] || item.title;
+                                const productImage = item.product?.images || item.images;
 
-                                            <p className="text-primary font-bold mt-1">৳{item.price.toLocaleString()}</p>
+                                return (
+                                    <div key={item.product?._id || index} className="p-2 space-y-2">
+                                        <div className="flex gap-4">
+                                            <img
+                                                src={productImage}
+                                                alt={productName}
+                                                className="w-20 h-20 object-cover rounded-lg border"
+                                            />
+                                            <div className="flex-1">
+                                                <h3 className="font-medium text-sm line-clamp-2">{productName}</h3>
+                                                <p className="text-primary font-bold mt-1">৳{item.price.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center border rounded-md">
+                                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity - 1, item?.product?._id ? item?.product?._id : item._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
+                                                <span className="w-8 text-center text-sm">{item.quantity}</span>
+                                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity + 1, item?.product?._id ? item?.product?._id : item._id)}><Plus className="h-3 w-3" /></Button>
+                                            </div>
+                                            <Button variant="ghost" size="icon" className="text-red-500" onClick={() => onRemoveItem(item?.product?._id ? item?.product?._id : item._id, cartData._id)}><Trash2 className="h-4 w-4" /></Button>
                                         </div>
                                     </div>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center border rounded-md">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity - 1, item?.product?._id ? item?.product?._id : item._id)} disabled={item.quantity <= 1}><Minus className="h-3 w-3" /></Button>
-                                            <span className="w-8 text-center text-sm">{item.quantity}</span>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onUpdateQuantity(cartData?._id, item.quantity + 1, item?.product?._id ? item?.product?._id : item._id)}><Plus className="h-3 w-3" /></Button>
-                                        </div>
-                                        <Button variant="ghost" size="icon" className="text-red-500" onClick={() => onRemoveItem(item?.product?._id ? item?.product?._id : item._id, cartData._id)}><Trash2 className="h-4 w-4" /></Button>
-                                    </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
 
                         {/* Desktop View Table */}
@@ -264,18 +269,19 @@ const CartPage = () => {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {cartData.orderedItems.map((item: any, index) => (
-                                        <TableRow key={item._id + index}>
+                                    {cartData.orderedItems.map((item: any, index: number) => (
+                                        <TableRow key={item.product?._id || index}>
                                             <TableCell>
                                                 <div className="flex items-center gap-4">
                                                     <img
-                                                        src={item?.product?.images ? item.product?.images : item.images}
-                                                        alt={item?.product?.title}
+                                                        src={item.product?.images || item.images}
+                                                        alt="product"
                                                         className="w-16 h-16 object-cover rounded border bg-white"
                                                     />
                                                     <div className="max-w-[300px]">
-                                                        <p className="font-semibold text-sm line-clamp-1">{item.product?.title ? item.product?.title : item.title}</p>
-                                                        <p className="text-xs text-muted-foreground">{item.product?.category}</p>
+                                                        <p className="font-semibold text-sm line-clamp-1">
+                                                            {item.product?.["*Product Name(English)"] || item.title}
+                                                        </p>
                                                         <p className="text-xs font-medium">Unit: ৳{item.price}</p>
                                                     </div>
                                                 </div>

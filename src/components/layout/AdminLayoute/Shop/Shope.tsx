@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useAllskuQuery } from "@/redux/features/sku/sku.api";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../../ui/badge";
 
 interface ISku {
   skuId: number;

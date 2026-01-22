@@ -18,7 +18,7 @@ import ProductDetails from "@/components/layout/HomeLayout/ProductCard/ProductDe
 import CartPage from "@/components/layout/HomeLayout/Cart/Cart";
 import OrderTrack from "@/pages/User/OrderTrack/Ordertack";
 import Help from "@/pages/Help/Help";
-import Shope from "@/components/Shop/Shope";
+import HomeShope from "@/components/layout/HomeShope/HomeShope";
 
 
 const router = createBrowserRouter([
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "shop",
-                Component: Shope,
+                Component: HomeShope,
             }, 
             {
                 path: "cart",
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
                 Component: Home,
             },
             {
-                path:"product/:id",
+                path:"pricestocks/:id",
                 Component:ProductDetails
             },
             {

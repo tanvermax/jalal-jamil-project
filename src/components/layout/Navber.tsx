@@ -200,16 +200,18 @@ export default function Navber() {
               <ShoppingCartIcon className="text-[#FF781A]" />
               <Badge className="bg-primary border-none absolute top-0 -right-5   rounded-full   tabular-nums  transform -translate-x-1/2 -translate-y-1/2" variant="outline">
                 {
-                  isLoading || isFetching ? <Spinner /> : cartData?.orderedItems.length ? cartData?.orderedItems.length : cartData?.orderedItems.length
+                  isLoading || isFetching || cartData.status=="Shipped" ? <Spinner /> : cartData?.orderedItems.length ? cartData?.orderedItems.length : cartData?.orderedItems.length
                 }
               </Badge>
             </Link>
             <ModeToggle />
             {/* Info menu */}
             {
-              isLoading || isFetching ? <Spinner /> : data?.data?.email && (<>
+              isLoading || isFetching ? <Spinner /> : data?.data?.email && (
+              <>
                 <UserMenu userData={data?.data} />
-              </>)
+              </>
+              )
 
             }
             {
