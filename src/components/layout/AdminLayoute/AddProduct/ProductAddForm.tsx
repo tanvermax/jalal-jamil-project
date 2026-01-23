@@ -91,47 +91,47 @@ export default function ProductAddForm() {
 
   // Alternative approach with manual toast control (if you prefer more control)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmitAlternative = async (data: IProduct) => {
-    if (!image) {
-      toast.error("Please select an image");
-      return;
-    }
+  // const onSubmitAlternative = async (data: IProduct) => {
+  //   if (!image) {
+  //     toast.error("Please select an image");
+  //     return;
+  //   }
 
-    const toastId = toast.loading("Please wait, product is adding...");
+  //   const toastId = toast.loading("Please wait, product is adding...");
 
-    try {
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(data));
-      formData.append("file", image as File);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("data", JSON.stringify(data));
+  //     formData.append("file", image as File);
 
-      if (file) {
-        formData.append("file", file);
-      }
+  //     if (file) {
+  //       formData.append("file", file);
+  //     }
 
-      const res = await addProduct(formData).unwrap();
+  //     const res = await addProduct(formData).unwrap();
       
-      console.log("✅ Product Added:", res);
+  //     console.log("✅ Product Added:", res);
       
-      // Update the loading toast to success
-      toast.success("Product added successfully! 🎉", {
-        id: toastId,
-        duration: 4000,
-      });
+  //     // Update the loading toast to success
+  //     toast.success("Product added successfully! 🎉", {
+  //       id: toastId,
+  //       duration: 4000,
+  //     });
 
-      form.reset();
-      setFile(null);
-      setImage(null);
+  //     form.reset();
+  //     setFile(null);
+  //     setImage(null);
 
-    } catch (error: any) {
-      console.error("❌ Error adding product:", error);
+  //   } catch (error: any) {
+  //     console.error("❌ Error adding product:", error);
       
-      // Update the loading toast to error
-      toast.error(`Failed to add product: ${error?.data?.message || "Unknown error"}`, {
-        id: toastId,
-        duration: 5000,
-      });
-    }
-  };
+  //     // Update the loading toast to error
+  //     toast.error(`Failed to add product: ${error?.data?.message || "Unknown error"}`, {
+  //       id: toastId,
+  //       duration: 5000,
+  //     });
+  //   }
+  // };
 
   return (
     <div className="max-w-xl mx-auto p-6 border rounded-lg shadow-sm">

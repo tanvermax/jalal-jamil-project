@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
+import { format, parseISO } from 'date-fns';
 import {
     Table,
     TableBody,
@@ -19,34 +20,37 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Truck, Package, MapPin } from "lucide-react";
+import { Loader2, Truck, Package, MapPin, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminupdateOrderMutation, useAllOrderForAdminQuery } from '@/redux/features/order/Order.api';
 
 export default function AdminOrderTrack() {
-    // 1. Destructure data as 'orderResponse' to be clearer
     const { data: orderResponse, isLoading } = useAllOrderForAdminQuery(undefined);
     const [updateOrder, { isLoading: isUpdating }] = useAdminupdateOrderMutation();
-    console.log("orderResponse",orderResponse)
-    // State for courier info
+
     const [courierName, setCourierName] = useState<{ [key: string]: string }>({});
     const [trackingInfo, setTrackingInfo] = useState<{ [key: string]: string }>({});
 
     const handleStatusChange = async (orderId: string, newStatus: string) => {
+        const updatedData = {
+            id: orderId,
+            status: newStatus,
+            trackingId: trackingInfo[orderId] || "N/A",
+            courierName: courierName[orderId] || "N/A"
+        };
+
+        // console.log("প্রেরিত ডেটা:", updatedData); // ব্রাউজারের ইনসপেক্ট-এ চেক করুন
+
         try {
-            // Your backend now requires status, trackingId, and courierName
-            const res = await updateOrder({
-                id: orderId,
-                status: newStatus,
-                trackingId: trackingInfo[orderId] || "N/A",
-                courierName: courierName[orderId] || "N/A"
-            }).unwrap();
-            
+            // ২. সরাসরি একটি অবজেক্ট হিসেবে পাঠান
+            const res = await updateOrder(updatedData).unwrap();
+
             if (res.success) {
                 toast.success(`Order updated to ${newStatus}`);
             }
         } catch (err) {
-            toast.error("Failed to update order. Check if all fields are filled.");
+            toast.error("Failed to update order.");
+            console.log(err)
         }
     };
 
@@ -62,9 +66,8 @@ export default function AdminOrderTrack() {
 
     if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="animate-spin h-10 w-10 text-orange-500" /></div>;
 
-    // 2. Safely access the array from the response object
     const ordersList = orderResponse?.data || [];
-
+    // console.log(ordersList)
     return (
         <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
@@ -79,8 +82,10 @@ export default function AdminOrderTrack() {
                 <Table>
                     <TableHeader className="bg-gray-50">
                         <TableRow>
-                            <TableHead>Order Details</TableHead>
+                            <TableHead className="w-[120px]">Order & Items</TableHead>
                             <TableHead>Customer / Shipping</TableHead>
+                            <TableHead>Order Details</TableHead>
+                            <TableHead>Date & Billing</TableHead>
                             <TableHead>Courier Info</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
@@ -88,52 +93,116 @@ export default function AdminOrderTrack() {
                     <TableBody>
                         {ordersList.length > 0 ? (
                             ordersList.map((order: any) => (
-                                <TableRow key={order._id}>
+                                <TableRow key={order._id} className="align-top">
+                                    {/* Order ID & Basic Status */}
                                     <TableCell>
-                                        <p className="font-bold text-xs">#{order._id.slice(-6).toUpperCase()}</p>
-                                        <p className="text-orange-600 font-semibold">৳{order.grandTotal}</p>
-                                        <Badge className={`${getStatusColor(order.status)} mt-1`}>
+                                        <p className="font-bold text-xs mb-1">#{order._id.slice(-6).toUpperCase()}</p>
+                                        <Badge className={`${getStatusColor(order.status)} text-[10px] px-2 py-0`}>
                                             {order.status}
                                         </Badge>
                                     </TableCell>
+
+                                    {/* Customer & Address */}
                                     <TableCell>
-                                        <div className="text-sm">
-                                            <p className="font-semibold">{order.shippingAddress?.name || "No Name"}</p>
-                                            <p className="text-gray-500 text-xs">{order.shippingAddress?.phone}</p>
-                                            <p className="text-gray-400 text-[10px] flex items-center">
-                                                <MapPin className="h-3 w-3 mr-1" /> {order.shippingAddress?.address}
-                                            </p>
+                                        <div className="text-xs space-y-1">
+                                            <p className="font-bold uppercase">{order.shippingAddress?.name}</p>
+                                            <p className="text-gray-600 font-medium">{order.shippingAddress?.phone}</p>
+                                            <div className="flex items-start text-gray-500 max-w-[150px]">
+                                                <MapPin className="h-3 w-3 mr-1 mt-0.5 shrink-0" />
+                                                <span className="leading-relaxed">{order.shippingAddress?.address}</span>
+                                            </div>
+                                            <Badge variant="outline" className="text-[9px] uppercase">
+                                                {order.shippingAddress?.shippingArea}
+                                            </Badge>
                                         </div>
                                     </TableCell>
+
+                                    {/* Ordered Products (Admin collection logic) */}
                                     <TableCell>
+                                        <div className="space-y-3 min-w-[200px]">
+                                            {order.orderedItems?.map((item: any, idx: number) => (
+                                                <div key={idx} className="flex items-center gap-2 border-b border-gray-50 pb-2 last:border-0">
+                                                    <div className="h-10 w-10 shrink-0 overflow-hidden rounded border bg-gray-50">
+                                                        <img
+                                                            src={item.product?.images || "/placeholder.png"}
+                                                            alt="product"
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="text-[11px] leading-tight">
+                                                        <p className="font-semibold line-clamp-2 text-gray-800">
+                                                            {item.product?.["*Product Name(English)"] || "Unknown Product"}
+                                                        </p>
+                                                        <p className="text-orange-600 font-bold mt-1">
+                                                            Qty: {item.quantity} × ৳{item.price}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </TableCell>
+
+                                    {/* Billing & Date */}
+                                    <TableCell>
+                                        <div className="text-xs space-y-1">
+                                            <p className="text-gray-400 font-medium">
+                                                {format(parseISO(order.createdAt), 'MMM dd, yyyy')}
+                                            </p>
+                                            <div className="pt-2">
+                                                <p className="text-gray-500">Subtotal: ৳{order.totalPrice}</p>
+                                                <p className="text-orange-600 font-bold text-sm">Total: ৳{order.grandTotal}</p>
+                                            </div>
+                                            <Badge className="text-[9px] bg-green-50 text-green-700 hover:bg-green-50">
+                                                Pay: {order.paymentStatus}
+                                            </Badge>
+                                        </div>
+                                    </TableCell>
+
+                                    {/* Courier Info */}
+                                   {
+                                    !order.courierName || !order.trackingId ?  <>
+                                     <TableCell>
                                         <div className="flex flex-col gap-1">
                                             <Input
                                                 placeholder="Courier Name"
-                                                className="h-7 w-40 text-[10px]"
+                                                className="h-7 w-32 text-[10px]"
                                                 defaultValue={order.courierName}
                                                 onChange={(e) => setCourierName({ ...courierName, [order._id]: e.target.value })}
                                             />
                                             <Input
                                                 placeholder="Tracking ID"
-                                                className="h-7 w-40 text-[10px]"
+                                                className="h-7 w-32 text-[10px]"
                                                 defaultValue={order.trackingId}
                                                 onChange={(e) => setTrackingInfo({ ...trackingInfo, [order._id]: e.target.value })}
                                             />
                                         </div>
                                     </TableCell>
+                                    </> : 
+                                    <>
+                                    <TableCell>
+                                        <p className="font-bold text-xs mb-1">{order.trackingId}</p>
+                                        <Badge >
+                                            {order.courierName}
+                                        </Badge>
+                                    </TableCell>
+                                    </>
+                                   }
+                                   
+
+                                    {/* Actions */}
                                     <TableCell className="text-right">
-                                        <div className="flex justify-end items-center gap-2">
+                                        <div className="flex flex-col items-end gap-2">
                                             <Select
                                                 defaultValue={order.status}
                                                 onValueChange={(val) => handleStatusChange(order._id, val)}
                                             >
-                                                <SelectTrigger className="w-[110px] h-8 text-xs">
+                                                <SelectTrigger className="w-[110px] h-8 text-[10px]">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="Pending">Pending</SelectItem>
-                                                    <SelectItem value="Shipped">Shipped</SelectItem>
                                                     <SelectItem value="Completed">Completed</SelectItem>
+                                                    <SelectItem value="Shipped">Shipped</SelectItem>
                                                     <SelectItem value="Cancelled">Cancelled</SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -141,10 +210,10 @@ export default function AdminOrderTrack() {
                                             <Button
                                                 size="sm"
                                                 disabled={isUpdating}
-                                                className="h-8 bg-orange-600 hover:bg-orange-700"
+                                                className="h-8 w-full bg-orange-600 hover:bg-orange-700 text-[10px]"
                                                 onClick={() => handleStatusChange(order._id, order.status)}
                                             >
-                                                {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Truck className="h-4 w-4" />}
+                                                {isUpdating ? <Loader2 className="h-3 w-3 animate-spin" /> : "Update Track"}
                                             </Button>
                                         </div>
                                     </TableCell>
@@ -152,7 +221,8 @@ export default function AdminOrderTrack() {
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={4} className="text-center py-10 text-gray-400">
+                                <TableCell colSpan={6} className="text-center py-20 text-gray-400">
+                                    <ShoppingCart className="mx-auto h-10 w-10 mb-2 opacity-20" />
                                     No orders found.
                                 </TableCell>
                             </TableRow>

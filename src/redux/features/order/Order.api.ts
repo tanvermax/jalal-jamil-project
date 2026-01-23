@@ -8,7 +8,7 @@ export const Orderapi = baseApi.injectEndpoints({
         url: "/order",
         method: "GET",
       }),
-      providesTags: ['PRODUCT'],
+      providesTags: ['ORDER'],
       //   transformResponse: (arg) => arg.data,
     }),
     Order: builder.mutation({
@@ -19,7 +19,7 @@ export const Orderapi = baseApi.injectEndpoints({
           data: order
         };
       },
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
     updateOrder: builder.mutation({
       query: ({ id, updatedData }) => ({
@@ -27,7 +27,7 @@ export const Orderapi = baseApi.injectEndpoints({
         method: "PATCH",
         data: updatedData
       }),
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
     confirmOrder: builder.mutation({
       query: ({ id, updatedData }) => ({
@@ -35,7 +35,7 @@ export const Orderapi = baseApi.injectEndpoints({
         method: "PATCH",
         data: updatedData
       }),
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
     confirmOrdernonUser: builder.mutation({
       query: ({ id, updatedData }) => ({
@@ -43,7 +43,7 @@ export const Orderapi = baseApi.injectEndpoints({
         method: "PATCH",
         data: updatedData
       }),
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
     deleteOrder: builder.mutation({
       query: ({ id, updatedData }) => ({
@@ -52,22 +52,22 @@ export const Orderapi = baseApi.injectEndpoints({
         data: updatedData
 
       }),
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
     AdminupdateOrder: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, ...updatedData }) => ({
         url: `/order/admin/${id}`,
         method: 'PATCH',
-        body: data,
+        data: updatedData ,
       }),
-      invalidatesTags: ['PRODUCT'],
+      invalidatesTags: ['ORDER'],
     }),
-     allOrderForAdmin: builder.query({
+    allOrderForAdmin: builder.query({
       query: () => ({
         url: "/order/admin",
         method: "GET",
       }),
-      providesTags: ['PRODUCT'],
+      providesTags: ['ORDER'],
       //   transformResponse: (arg) => arg.data,
     }),
 
@@ -75,4 +75,4 @@ export const Orderapi = baseApi.injectEndpoints({
 });
 
 
-export const { useDeleteOrderMutation,useAllOrderForAdminQuery,useAdminupdateOrderMutation, useAllOrderQuery, useUpdateOrderMutation, useOrderMutation, useConfirmOrderMutation, useConfirmOrdernonUserMutation } = Orderapi
+export const { useDeleteOrderMutation, useAllOrderForAdminQuery, useAdminupdateOrderMutation, useAllOrderQuery, useUpdateOrderMutation, useOrderMutation, useConfirmOrderMutation, useConfirmOrdernonUserMutation } = Orderapi

@@ -3,7 +3,12 @@ import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
 
 import { useEffect } from "react";
 
-export default function SingleImageUploader({ onChange }) {
+
+interface SingleImageUploaderProps {
+  onChange: (file: File | null) => void;
+}
+
+export default function SingleImageUploader({ onChange }: SingleImageUploaderProps) {
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
 
@@ -26,12 +31,20 @@ export default function SingleImageUploader({ onChange }) {
   console.log("Inside image uploader", files);
 
   useEffect(() => {
-    if (files.length > 0) {
-      onChange(files[0].file);
+    if (files && files.length > 0) {
+      const currentFile = files[0].file;
+
+      if (currentFile instanceof File) {
+        onChange(currentFile);
+      } else {
+        // If it's FileMetadata (like a placeholder), we treat it as null 
+        // or handle it based on your requirement
+        onChange(null);
+      }
     } else {
       onChange(null);
     }
-  }, [files]);
+  }, [files, onChange]);
 
   const previewUrl = files[0]?.preview || null;
 

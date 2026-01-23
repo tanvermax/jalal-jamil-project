@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { useOrderMutation } from "../features/order/Order.api";
 import { useUserInfoQuery } from "../features/auth/auth.api";
 import { toast } from "sonner";
@@ -19,7 +18,7 @@ export const useCart = () => {
     const { data: userInfo, isLoading: isUserLoading, refetch } = useUserInfoQuery(undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     // hooks/useCart.ts - Update addToCart function
     const addToCart = async (item: AddToCartParams) => {

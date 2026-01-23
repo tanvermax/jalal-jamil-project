@@ -8,7 +8,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 interface productCardPropsa {
-    id: string,
+    id:   string ,
     name: string,
     price: number,
     SpecialPrice: number,
