@@ -57,8 +57,10 @@ export default function ProductCard({ id, name, price, SpecialPrice, image, isLo
             console.error('Failed to add product to cart:', error);
         }
     };
+    const discouunt = Math.round(SpecialPrice-price);
 
-    const discountPercentage = Math.round(((price - SpecialPrice) / price) * 100);
+
+    const discountPercentage = Math.round(((discouunt / SpecialPrice) * 100));
 
     // console.log(discountPercentage)
     if (isLoading) {

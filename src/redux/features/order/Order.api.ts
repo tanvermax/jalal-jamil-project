@@ -53,10 +53,26 @@ export const Orderapi = baseApi.injectEndpoints({
 
       }),
       invalidatesTags: ['PRODUCT'],
-    })
+    }),
+    AdminupdateOrder: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/order/admin/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: ['PRODUCT'],
+    }),
+     allOrderForAdmin: builder.query({
+      query: () => ({
+        url: "/order/admin",
+        method: "GET",
+      }),
+      providesTags: ['PRODUCT'],
+      //   transformResponse: (arg) => arg.data,
+    }),
 
   }),
 });
 
 
-export const { useDeleteOrderMutation, useAllOrderQuery, useUpdateOrderMutation, useOrderMutation, useConfirmOrderMutation, useConfirmOrdernonUserMutation } = Orderapi
+export const { useDeleteOrderMutation,useAllOrderForAdminQuery,useAdminupdateOrderMutation, useAllOrderQuery, useUpdateOrderMutation, useOrderMutation, useConfirmOrderMutation, useConfirmOrdernonUserMutation } = Orderapi

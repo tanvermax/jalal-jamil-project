@@ -19,7 +19,7 @@ export const productapi = baseApi.injectEndpoints({
       }),
       transformResponse: (arg) => arg.data,
     }),
-     allpstock: builder.query({
+    allpstock: builder.query({
       query: () => ({
         url: "/pricestocks",
         method: "GET",
@@ -46,11 +46,13 @@ export const productapi = baseApi.injectEndpoints({
         url: `/pricestocks/${id}`,
         method: "GET",
       }),
+      keepUnusedDataFor: 600, // 10 minutes
+      providesTags: ['PRODUCT'],
       // transformResponse: (arg) => arg.data.data,
     }),
-    
+
   }),
 });
 
 
-export const { useAllpstockQuery,useAllproductQuery,usePricestockDetailsQuery, useCreateProductMutation,useDeleteProductMutation } = productapi
+export const { useAllpstockQuery, useAllproductQuery, usePricestockDetailsQuery, useCreateProductMutation, useDeleteProductMutation } = productapi
