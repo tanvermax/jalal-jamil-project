@@ -17,8 +17,9 @@ export function LoginForm({
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
-  // const date = new Date();
-  // console.log("date",date)
+
+
+  
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const date  = new Date();
     console.log("date",date)

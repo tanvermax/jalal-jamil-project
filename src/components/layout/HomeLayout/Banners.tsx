@@ -2,10 +2,10 @@ import { CarouselPlugin } from "./Carosel1";
 
 const homeData1 = [
     { content: "https://i.ibb.co.com/CKysdQRc/Chat-GPT-Image-Sep-28-2025-03-15-44-PM.png" },
-    { content: "https://bd-live-21.slatic.net/kf/S267b34dfc24a44278ab40aed892f29cff.jpg" },
+    { content: "https://static-01.daraz.com.bd/p/8ba80f0acff1055a2223ed4379bbf922.jpg" },
     { content: "https://static-01.daraz.com.bd/p/a4effb858e0c7348fb7781c22ccf198c.jpg" },
     { content: "https://static-01.daraz.com.bd/p/c45d2b1bc7d778e4617a6a09c5276164.jpg" },
-    { content: "https://i.ibb.co.com/CKysdQRc/Chat-GPT-Image-Sep-28-2025-03-15-44-PM.png" }
+    { content: "https://bd-live-21.slatic.net/kf/S5d83d4ee7f98458f80b9a91f0a6dffccF.jpg" }
 ]
 const homeData2 = [
     { content: "https://static-01.daraz.com.bd/p/6dc39c2599cf3a3cd201f29bc1514b49.jpg" },
@@ -58,7 +58,7 @@ export default function Banners() {
                 <CarouselPlugin imgsize="w-full  h-[65vh]" delayyime={1100}  data={homeData1} />
             </div>
             <div className="   w-full mx-auto  my-auto block md:hidden ">
-                <CarouselPlugin delayyime={1100}  data={homeData1} />
+                <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={1100}  data={homeData1} />
             </div>
 
             {/* Third column with two carousels stacked vertically */}
