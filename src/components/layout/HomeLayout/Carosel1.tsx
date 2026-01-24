@@ -6,50 +6,58 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    //   CarouselNext,
-    //   CarouselPrevious,
 } from "@/components/ui/carousel"
 
 interface CarouselPluginProps {
-    data: { content:  string }[],
-    delayyime:number,
-    imgsize?:string,
-    imgsizelg?:string
+    data: { content: string }[],
+    delayyime: number,
+    imgsize?: string,
+    imgsizelg?: string
 }
 
-export function CarouselPlugin({imgsizelg, imgsize,data,delayyime }: CarouselPluginProps) {
+export function CarouselPlugin({ imgsizelg, imgsize, data, delayyime }: CarouselPluginProps) {
     const plugin = React.useRef(
         Autoplay({ delay: delayyime, stopOnInteraction: true })
     )
 
+    // ফাইলটি ভিডিও কিনা তা চেক করার ফাংশন
+    const isVideo = (url: string) => {
+        return /\.(mp4|webm|ogg)$/i.test(url) || url.includes("video");
+    };
+
     return (
         <Carousel
             plugins={[plugin.current]}
-            className=""
+            className="w-full"
             onMouseEnter={plugin.current.stop}
             onMouseLeave={plugin.current.reset}
         >
-            <CarouselContent className="">
+            <CarouselContent>
                 {data.map((item, index) => (
-                    <CarouselItem key={index} >
-                        <div className="  ">
-                            <Card className=" border-none">
-                                <CardContent className="p-1 ">
-                                    {/* <span className="text-4xl font-semibold">{item.content}</span> */}
-                                    <img src={item.content}
-                                     className={`rounded-md   ${imgsize} md:${imgsizelg}`}
-                                      alt="" />
-                                </CardContent>
-                            </Card>
-                        </div>
+                    <CarouselItem key={index}>
+                        <Card className="border-none shadow-none">
+                            <CardContent className="p-1">
+                                {isVideo(item.content) ? (
+                                    <video
+                                        src={item.content}
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={`rounded-md object-cover ${imgsize} md:${imgsizelg}`}
+                                    />
+                                ) : (
+                                    <img
+                                        src={item.content}
+                                        className={`rounded-md object-cover ${imgsize} md:${imgsizelg}`}
+                                        alt={`Banner ${index}`}
+                                    />
+                                )}
+                            </CardContent>
+                        </Card>
                     </CarouselItem>
-
-
-
                 ))}
             </CarouselContent>
-            {/* <CarouselPrevious /> */}
-            {/* <CarouselNext /> */}
         </Carousel>
     )
 }
