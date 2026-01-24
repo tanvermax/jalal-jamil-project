@@ -20,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Truck, Package, MapPin, ShoppingCart } from "lucide-react";
+import { Loader2, Package, MapPin, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminupdateOrderMutation, useAllOrderForAdminQuery } from '@/redux/features/order/Order.api';
 

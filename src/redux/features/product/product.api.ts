@@ -20,11 +20,12 @@ export const productapi = baseApi.injectEndpoints({
       transformResponse: (arg) => arg.data,
     }),
     allpstock: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/pricestocks",
         method: "GET",
+        params: params, 
       }),
-      transformResponse: (arg) => arg.data,
+      transformResponse: (arg) => arg,
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({

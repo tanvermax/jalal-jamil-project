@@ -1,17 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Assuming Shadcn UI
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select"; // Assuming Shadcn UI
-import { Loader2, Search, SlidersHorizontal } from "lucide-react";
-import ProductCard from '../HomeLayout/ProductCard/ProductCard';
-import { useAllpstockQuery } from '@/redux/features/product/product.api';
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import ProductCard from "../HomeLayout/ProductCard/ProductCard";
+import { useAllpstockQuery } from "@/redux/features/product/product.api";
+
+/* ================== Skeleton Card ================== */
+const ProductSkeleton = () => (
+  <div className="space-y-3">
+    <Skeleton className="h-[160px] w-full rounded-lg" />
+    <Skeleton className="h-4 w-3/4" />
+    <Skeleton className="h-4 w-1/2" />
+  </div>
+);
 
 export default function HomeShope() {
   const [page, setPage] = useState(1);
@@ -19,107 +31,116 @@ export default function HomeShope() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("default");
 
-  // Pass parameters to RTK Query if your backend supports them
+  /* ================== API ================== */
   const { data, isLoading, isFetching } = useAllpstockQuery({
     page,
+    limit: 20,
     search: searchTerm,
-    sort: sortBy
   });
 
-  useEffect(() => {
-    if (data) {
-      setAllProducts((prev) => (page === 1 ? data : [...prev, ...data]));
-    }
-  }, [data, page]);
-
-  // Logic for filtering and sorting on the frontend if your API doesn't do it
-  const displayProducts = [...allProducts]
-    .filter(p => p["*Product Name(English)"].toLowerCase().includes(searchTerm.toLowerCase()))
-    .sort((a, b) => {
-      const priceA = a.SpecialPrice || a["*Price"];
-      const priceB = b.SpecialPrice || b["*Price"];
-      if (sortBy === "lowToHigh") return priceA - priceB;
-      if (sortBy === "highToLow") return priceB - priceA;
-      return 0;
+useEffect(() => {
+  if (data?.data) {
+    setAllProducts((prev) => {
+      if (page === 1) return data.data;
+      const existingIds = new Set(prev.map((p) => p._id));
+      const newUniqueProducts = data.data.filter(
+        (product: any) => !existingIds.has(product._id)
+      );
+      return [...prev, ...newUniqueProducts];
     });
+  }
+}, [data, page]);
+
+  /* ================== Search ================== */
+  const handleSearch = (val: string) => {
+    setSearchTerm(val);
+    setPage(1);
+  };
+
+  /* ================== Frontend Sorting ================== */
+  const sortedProducts = [...allProducts].sort((a, b) => {
+    const priceA = parseFloat(a.SpecialPrice) || parseFloat(a["*Price"]) || 0;
+    const priceB = parseFloat(b.SpecialPrice) || parseFloat(b["*Price"]) || 0;
+
+    if (sortBy === "lowToHigh") return priceA - priceB;
+    if (sortBy === "highToLow") return priceB - priceA;
+    return 0;
+  });
 
   return (
     <div className="container mx-auto px-4 md:py-10 py-5">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:mb-10 mb-5">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 uppercase tracking-tight whitespace-nowrap">
-          Explore Our Collection
-        </h2>
-
-        {/* Search and Sort Controls */}
-        <div className="flex flex-1 items-center gap-3 max-w-2xl w-full">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products..."
-              className="pl-10 h-11 bg-gray-50/50 border-gray-200 focus:ring-orange-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          
-          <Select onValueChange={(value) => setSortBy(value)}>
-            <SelectTrigger className="w-[180px] h-11 bg-gray-50/50 border-gray-200">
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">Newest</SelectItem>
-              <SelectItem value="lowToHigh">Price: Low to High</SelectItem>
-              <SelectItem value="highToLow">Price: High to High</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-        {displayProducts.map((product: any) => (
-          <ProductCard
-            key={product._id}
-            id={product._id}
-            name={product["*Product Name(English)"]}
-            price={product.SpecialPrice || product["*Price"]}
-            SpecialPrice={product.SpecialPrice ? product["*Price"] : undefined}
-            image={product.images || "/placeholder-image.png"}
-            isLoading={false}
+      {/* ================== Search + Sort ================== */}
+      <div className="flex flex-1 items-center justify-between gap-3  w-full md:mb-10 mb-5">
+        <div className="relative flex-1 md:max-w-2xl">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search products..."
+            className="pl-10 h-11"
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
           />
-        ))}
+        </div>
 
-        {isLoading && page === 1 && (
-          [...Array(10)].map((_, i) => (
-            <div key={i} className="h-72 bg-gray-100 animate-pulse rounded-xl" />
-          ))
-        )}
+        <Select onValueChange={setSortBy}>
+          <SelectTrigger className=" h-11">
+            <SlidersHorizontal className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Sort By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Default</SelectItem>
+            <SelectItem value="lowToHigh">Price: Low → High</SelectItem>
+            <SelectItem value="highToLow">Price: High → Low</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Empty State */}
-      {displayProducts.length === 0 && !isLoading && (
-        <div className="text-center py-20 text-gray-500">
-          No products found matching your search.
-        </div>
-      )}
+      {/* ================== Product Grid ================== */}
+      <AnimatePresence>
+        <motion.div
+          layout
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+        >
+          {/* Initial Loading Skeleton */}
+          {isLoading &&
+            Array.from({ length: 20 }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
 
-      {/* Load More Button */}
+          {/* Products */}
+          {!isLoading &&
+            sortedProducts.map((product: any) => (
+              <motion.div
+                key={product._id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+              >
+                <ProductCard
+                key={product._id}
+                  id={product._id}
+                  name={product["*Product Name(English)"]}
+                  price={product.SpecialPrice || product["*Price"]}
+                  SpecialPrice={
+                    product.SpecialPrice ? product["*Price"] : undefined
+                  }
+                  image={product.images || "/placeholder-image.png"}
+                  isLoading={false}
+                />
+              </motion.div>
+            ))}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ================== Load More ================== */}
       <div className="mt-12 flex justify-center">
         {allProducts.length < (data?.meta?.total || 0) && (
           <Button
-            size="lg"
-            variant="outline"
-            onClick={() => setPage(prev => prev + 1)}
             disabled={isFetching}
-            className="min-w-[200px] border-orange-500 text-orange-600 hover:bg-orange-50 font-semibold"
+            onClick={() => setPage((p) => p + 1)}
+            className="min-w-[160px]"
           >
-            {isFetching ? (
-              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...</>
-            ) : (
-              "Load More Products"
-            )}
+            {isFetching ? "Loading more..." : "Load More"}
           </Button>
         )}
       </div>
