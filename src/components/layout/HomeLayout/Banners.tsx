@@ -1,12 +1,12 @@
 import { CarouselPlugin } from "./Carosel1";
 import video1 from "../../../assets/video/grok-video-179dddd3-632d-44cc-99d2-c5abd2741c9d.mp4"
+import  video2  from "../../../assets/video/grok-video-658cb8c4-1dde-4941-be48-112473c0ee84.mp4"
+import  video3  from "../../../assets/video/grok-video-e17ba1fd-1b5c-45e4-a257-240606b48c0c.mp4"
 
 const homeData1 = [
     { content: video1,type:'video' },
-    { content: "https://static-01.daraz.com.bd/p/8ba80f0acff1055a2223ed4379bbf922.jpg" },
-    { content: "https://static-01.daraz.com.bd/p/a4effb858e0c7348fb7781c22ccf198c.jpg" },
-    { content: "https://static-01.daraz.com.bd/p/c45d2b1bc7d778e4617a6a09c5276164.jpg" },
-    { content: "https://bd-live-21.slatic.net/kf/S5d83d4ee7f98458f80b9a91f0a6dffccF.jpg" }
+    { content: video2,type:'video' },
+    { content: video3,type:'video' },
 ]
 const homeData2 = [
     { content: "https://static-01.daraz.com.bd/p/6dc39c2599cf3a3cd201f29bc1514b49.jpg" },
