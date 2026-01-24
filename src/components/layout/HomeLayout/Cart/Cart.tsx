@@ -141,7 +141,7 @@ const CartPage = () => {
                 localStorage.removeItem('guestCart');
                 window.dispatchEvent(new Event('cartUpdated'));
                 toast.success(`Order Confirmed!`);
-                navigate("/");
+                navigate("/thankyou");
             }
         }
         // 2. Logic for Logged-in Users
@@ -160,7 +160,7 @@ const CartPage = () => {
 
             if (orderconfirm) {
                 toast.success(`Order Confirmed!`);
-                navigate("/");
+                navigate("/thankyou");
             }
         }
     };

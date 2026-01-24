@@ -19,6 +19,7 @@ import CartPage from "@/components/layout/HomeLayout/Cart/Cart";
 import OrderTrack from "@/pages/User/OrderTrack/Ordertack";
 import Help from "@/pages/Help/Help";
 import HomeShope from "@/components/layout/HomeShope/HomeShope";
+import OrderSuccessPage from "@/components/layout/OrderSuccess/OrderSuccessPage";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "cart",
                 Component: CartPage,
+            }, 
+            {
+                path: "thankyou",
+                Component: OrderSuccessPage,
             }, 
             {
                 path: "/",
