@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Trash2, Plus, Minus, ShoppingBag, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import ausio from "../../../../assets/audio/mixkit-sci-fi-click-900.wav"
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -134,13 +136,18 @@ const CartPage = () => {
                     orderedItems,
                     status: "Shipped",
                 },
+
             });
+
             console.log(orderconfirm.data)
 
             if (orderconfirm.data) {
                 localStorage.removeItem('guestCart');
                 window.dispatchEvent(new Event('cartUpdated'));
                 toast.success(`Order Confirmed!`);
+                const audio = new Audio(`${ausio}`);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                audio.play().catch(e => console.log("Audio play blocked by browser"));
                 navigate("/thankyou");
             }
         }
@@ -159,6 +166,9 @@ const CartPage = () => {
             });
 
             if (orderconfirm) {
+                const audio = new Audio(`${ausio}`);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                audio.play().catch(e => console.log("Audio play blocked by browser"));
                 toast.success(`Order Confirmed!`);
                 navigate("/thankyou");
             }

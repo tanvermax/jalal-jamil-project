@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import ausio from "../../../../assets/audio/mixkit-sci-fi-click-900.wav"
 import { format, parseISO } from 'date-fns';
 import {
     Table,
@@ -10,6 +11,7 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
+import { io } from "socket.io-client";
 import {
     Select,
     SelectContent,
@@ -24,12 +26,19 @@ import { Loader2, Package, MapPin, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminupdateOrderMutation, useAllOrderForAdminQuery } from '@/redux/features/order/Order.api';
 
+const socket = io(import.meta.env.VITE_BASE_URL);
+
+
 export default function AdminOrderTrack() {
-    const { data: orderResponse, isLoading } = useAllOrderForAdminQuery(undefined);
+    const { data: orderResponse, isLoading } = useAllOrderForAdminQuery(undefined, {
+        pollingInterval: 30000, // Checks every 30 seconds
+        refetchOnFocus: true,   // Refetch when you click back onto the tab
+    });
     const [updateOrder, { isLoading: isUpdating }] = useAdminupdateOrderMutation();
 
     const [courierName, setCourierName] = useState<{ [key: string]: string }>({});
     const [trackingInfo, setTrackingInfo] = useState<{ [key: string]: string }>({});
+
 
     const handleStatusChange = async (orderId: string, newStatus: string) => {
         const updatedData = {
@@ -54,6 +63,42 @@ export default function AdminOrderTrack() {
         }
     };
 
+    const ordersList = orderResponse?.data || [];
+
+    const prevOrderCount = useRef(ordersList.length);
+
+    useEffect(() => {
+        // If the new list is longer than the old list, a new order arrived!
+        if (ordersList.length > prevOrderCount.current) {
+            const newOrder = ordersList[0]; // Assuming newest is first
+
+            // Play a notification sound (optional)
+            const audio = new Audio(`${ausio}`);
+            audio.play().catch(e => console.log("Audio play blocked by browser"));
+
+            toast.success(`🎉 New Order Received! Order ID: #${newOrder._id}`, {
+                duration: 5000,
+                position: 'top-right',
+            });
+        }
+        // Update the ref to the current length
+        prevOrderCount.current = ordersList.length;
+    }, [ordersList]);
+
+    useEffect(() => {
+        const handleNotification = (data: any) => {
+            const audio = new Audio(`${ausio}`);
+            audio.play().catch(err => console.log("Sound blocked until user interacts with page."));
+            toast.success(`New Order: ${data.orderId}`);
+        };
+
+        socket.on("newOrderNotification", handleNotification);
+
+        // Return a function that returns VOID
+        return () => {
+            socket.off("newOrderNotification", handleNotification);
+        };
+    }, []);
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'Pending': return 'bg-yellow-100 text-yellow-800';
@@ -66,8 +111,9 @@ export default function AdminOrderTrack() {
 
     if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="animate-spin h-10 w-10 text-orange-500" /></div>;
 
-    const ordersList = orderResponse?.data || [];
     // console.log(ordersList)
+
+
     return (
         <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
@@ -159,35 +205,35 @@ export default function AdminOrderTrack() {
                                     </TableCell>
 
                                     {/* Courier Info */}
-                                   {
-                                    !order.courierName || !order.trackingId ?  <>
-                                     <TableCell>
-                                        <div className="flex flex-col gap-1">
-                                            <Input
-                                                placeholder="Courier Name"
-                                                className="h-7 w-32 text-[10px]"
-                                                defaultValue={order.courierName}
-                                                onChange={(e) => setCourierName({ ...courierName, [order._id]: e.target.value })}
-                                            />
-                                            <Input
-                                                placeholder="Tracking ID"
-                                                className="h-7 w-32 text-[10px]"
-                                                defaultValue={order.trackingId}
-                                                onChange={(e) => setTrackingInfo({ ...trackingInfo, [order._id]: e.target.value })}
-                                            />
-                                        </div>
-                                    </TableCell>
-                                    </> : 
-                                    <>
-                                    <TableCell>
-                                        <p className="font-bold text-xs mb-1">{order.trackingId}</p>
-                                        <Badge >
-                                            {order.courierName}
-                                        </Badge>
-                                    </TableCell>
-                                    </>
-                                   }
-                                   
+                                    {
+                                        !order.courierName || !order.trackingId ? <>
+                                            <TableCell>
+                                                <div className="flex flex-col gap-1">
+                                                    <Input
+                                                        placeholder="Courier Name"
+                                                        className="h-7 w-32 text-[10px]"
+                                                        defaultValue={order.courierName}
+                                                        onChange={(e) => setCourierName({ ...courierName, [order._id]: e.target.value })}
+                                                    />
+                                                    <Input
+                                                        placeholder="Tracking ID"
+                                                        className="h-7 w-32 text-[10px]"
+                                                        defaultValue={order.trackingId}
+                                                        onChange={(e) => setTrackingInfo({ ...trackingInfo, [order._id]: e.target.value })}
+                                                    />
+                                                </div>
+                                            </TableCell>
+                                        </> :
+                                            <>
+                                                <TableCell>
+                                                    <p className="font-bold text-xs mb-1">{order.trackingId}</p>
+                                                    <Badge >
+                                                        {order.courierName}
+                                                    </Badge>
+                                                </TableCell>
+                                            </>
+                                    }
+
 
                                     {/* Actions */}
                                     <TableCell className="text-right">
