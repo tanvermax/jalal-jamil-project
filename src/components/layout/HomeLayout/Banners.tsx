@@ -59,7 +59,7 @@ export default function Banners() {
                 <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={4500}  data={homeData1} />
             </div>
             <div className="     w-full mx-auto  my-auto block md:hidden ">
-                <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={4500}  data={homeData1} />
+                <CarouselPlugin imgsize="w-full  h-[25vh]" delayyime={4500}  data={homeData1} />
             </div>
 
             {/* Third column with two carousels stacked vertically */}
