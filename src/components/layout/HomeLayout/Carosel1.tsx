@@ -49,7 +49,7 @@ export function CarouselPlugin({ imgsizelg, imgsize, data, delayyime }: Carousel
                                 ) : (
                                     <img
                                         src={item.content}
-                                        className={`rounded-md object-cover ${imgsize} md:${imgsizelg}`}
+                                        className={`rounded-md  ${imgsize} md:${imgsizelg}`}
                                         alt={`Banner ${index}`}
                                     />
                                 )}

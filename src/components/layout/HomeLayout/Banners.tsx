@@ -46,30 +46,30 @@ export default function Banners() {
         <div className="grid     grid-cols-1 lg:grid-cols-10 gap-4 my-4 container mx-auto">
             {/* First column with two carousels stacked vertically */}
             <div className="flex-col grid-rows-2 col-span-3  gap-4 hidden lg:block">
-                <div className=" ">
-                    <CarouselPlugin imgsize="w-full h-[32vh]" delayyime={1400} data={homeData3} />
+                <div className="   ">
+                    <CarouselPlugin imgsize="w-full  h-[17vh]" delayyime={1400} data={homeData3} />
                 </div>
-                <div className="">
-                    <CarouselPlugin imgsize="w-full  h-[32vh]" delayyime={1500} data={homeData2} />
+                <div className="  ">
+                    <CarouselPlugin imgsize="w-full  h-[17vh]" delayyime={1500} data={homeData2} />
                 </div>
             </div>
 
             {/* Second column with a single carousel */}
-            <div className="col-span-4   md:block hidden h-full">
-                <CarouselPlugin imgsize="w-full  h-[65vh]" delayyime={5000}  data={homeData1} />
+            <div className="col-span-4     md:block hidden h-full">
+                <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={4500}  data={homeData1} />
             </div>
-            <div className="   w-full mx-auto  my-auto block md:hidden ">
-                <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={5000}  data={homeData1} />
+            <div className="     w-full mx-auto  my-auto block md:hidden ">
+                <CarouselPlugin imgsize="w-full  h-[35vh]" delayyime={4500}  data={homeData1} />
             </div>
 
             {/* Third column with two carousels stacked vertically */}
             <div className="flex-col col-span-3  hidden lg:block">
-                <div className="">
-                    <CarouselPlugin imgsize="w-full  h-[32vh]" delayyime={1500} data={homeData4} />
+                <div className="  ">
+                    <CarouselPlugin imgsize="w-full  h-[17vh]" delayyime={1500} data={homeData4} />
                 </div>
-                <div className="flex   items-center">
-                    <CarouselPlugin delayyime={1400} imgsize=" w-full   h-[32vh] w-full" data={homeData5}  />
-                    <CarouselPlugin delayyime={1300} imgsize=" w-full  h-[32vh] w-full" data={sideDAta}  />
+                <div className="flex     items-center">
+                    <CarouselPlugin delayyime={1400} imgsize=" w-full   h-[17vh] w-full" data={homeData5}  />
+                    <CarouselPlugin delayyime={1300} imgsize=" w-full  h-[17vh] w-full" data={sideDAta}  />
                 </div>
             </div>
         </div>
