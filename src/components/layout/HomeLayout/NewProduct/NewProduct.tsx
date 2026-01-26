@@ -21,7 +21,7 @@ export default function NewProduct() {
             md:px-4 lg:px-6">
                 <h1 className="
                 text-xs md:text-2xl font-bold 
-                text-gray-900">
+                ">
                     NEW PRODUCT
                 </h1>
                 <div>

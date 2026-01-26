@@ -31,14 +31,14 @@ export default function OrderSuccessPage() {
                 <Package className="h-5 w-5 text-orange-600 mt-1" />
                 <div>
                   <p className="text-sm text-gray-500 uppercase font-semibold">Order Number</p>
-                  <p className="text-lg font-bold text-gray-800">#{orderId}</p>
+                  <p className="text-lg font-bold ">#{orderId}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Truck className="h-5 w-5 text-orange-600 mt-1" />
                 <div>
                   <p className="text-sm text-gray-500 uppercase font-semibold">Estimated Delivery</p>
-                  <p className="text-lg font-bold text-gray-800">{deliveryDate}</p>
+                  <p className="text-lg font-bold ">{deliveryDate}</p>
                 </div>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default function OrderSuccessPage() {
             </Link>
             
             <Link to="/" className="flex-1">
-              <button className="w-full flex items-center justify-center gap-2 bg-white text-gray-800 border-2 border-gray-200 py-3 px-6 rounded-xl font-semibold hover:bg-gray-50 transition-all active:scale-95">
+              <button className="w-full flex items-center justify-center gap-2 bg-white  border-2 border-gray-200 py-3 px-6 rounded-xl font-semibold  transition-all active:scale-95">
                 <ArrowLeft className="h-4 w-4" />
                 Continue Shopping
               </button>

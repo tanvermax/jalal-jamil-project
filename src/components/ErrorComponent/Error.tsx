@@ -181,8 +181,8 @@ const DeluxeError: React.FC<DeluxeErrorProps> = ({
                 onClick={handleHome}
                 className={`px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                   isDark 
-                    ? 'bg-white text-black hover:bg-gray-200' 
-                    : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 shadow-lg'
+                    ? 'bg-white  hover:bg-gray-200' 
+                    : 'bg-white  border border-gray-300  shadow-lg'
                 }`}
               >
                 🏠 Go Home

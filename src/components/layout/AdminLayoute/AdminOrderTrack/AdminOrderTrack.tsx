@@ -130,7 +130,7 @@ export default function AdminOrderTrack() {
                                                         />
                                                     </div>
                                                     <div className="text-[11px] leading-tight">
-                                                        <p className="font-semibold line-clamp-2 text-gray-800">
+                                                        <p className="font-semibold line-clamp-2 ">
                                                             {item.product?.["*Product Name(English)"] || "Unknown Product"}
                                                         </p>
                                                         <p className="text-orange-600 font-bold mt-1">

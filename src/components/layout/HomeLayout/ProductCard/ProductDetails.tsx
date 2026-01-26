@@ -149,7 +149,7 @@ const ProductDetails = () => {
         {/* --- RIGHT: INFO --- */}
         <div className="flex flex-col space-y-6">
           <header>
-            <h1 className="text-xl md:text-3xl font-bold text-gray-900">
+            <h1 className="text-xl md:text-3xl font-bold ">
               {product["*Product Name(English)"] == product["Product Name(Bengali) look function"] ? product["*Product Name(English)"] : <>{product["Product Name(Bengali) look function"]} -{product["*Product Name(English)"]}</>}
             </h1>
             <div className="flex items-center gap-2 mt-4">
@@ -169,7 +169,7 @@ const ProductDetails = () => {
               <div className="flex flex-col">
                 {product["SpecialPrice"] ? (
                   <>
-                    <span className="text-sm text-gray-500 line-through">৳ {product["*Price"]}</span>
+                    <span className="text-sm  line-through">৳ {product["*Price"]}</span>
                     <span className="text-4xl font-black text-[#ff7900]">৳ {product["SpecialPrice"]}</span>
                   </>
                 ) : (
@@ -177,7 +177,7 @@ const ProductDetails = () => {
                 )}
               </div>
               {discountPercentage > 0 && (
-                <Badge className="bg-orange-500 text-white px-3 py-1 text-md font-bold animate-bounce">
+                <Badge className="bg-orange-500  px-3 py-1 text-md font-bold animate-bounce">
                   {discountPercentage}% OFF
                 </Badge>
               )}
@@ -187,12 +187,12 @@ const ProductDetails = () => {
           {/* Highlights */}
           {product.Highlights && (
             <div className="space-y-3">
-              <h3 className="font-bold text-gray-800 flex items-center gap-2">
+              <h3 className="font-bold  flex items-center gap-2">
                 <Info className="h-5 w-5 text-orange-500" />
                 Product Details
               </h3>
               <div
-                className="prose prose-sm max-w-none text-gray-600 border-l-4 border-orange-100 pl-4"
+                className="prose prose-sm max-w-none  border-l-4 border-orange-100 pl-4"
                 dangerouslySetInnerHTML={{ __html: product.Highlights }}
               />
             </div>
@@ -200,11 +200,11 @@ const ProductDetails = () => {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <div className="flex items-center border-2 border-gray-200 rounded-xl h-14 bg-white">
+            <div className="flex items-center border-2 border-gray-200 rounded-xl h-14 ">
               <button
                 disabled={isAddingToCart || quantity <= 1}
                 onClick={() => setQuantity(q => q - 1)}
-                className="px-5 hover:bg-gray-50 h-full transition-colors disabled:opacity-30"
+                className="px-5  h-full transition-colors disabled:opacity-30"
               >
                 <Minus className="h-5 w-5" />
               </button>
@@ -212,7 +212,7 @@ const ProductDetails = () => {
               <button
                 disabled={isAddingToCart}
                 onClick={() => setQuantity(q => q + 1)}
-                className="px-5 hover:bg-gray-50 h-full transition-colors"
+                className="px-5  h-full transition-colors"
               >
                 <Plus className="h-5 w-5" />
               </button>
@@ -229,8 +229,8 @@ const ProductDetails = () => {
 
           {/* Product Footer */}
           <div className="pt-6 border-t border-gray-100 grid grid-cols-2 gap-y-3 text-sm text-gray-500">
-            <p><span className="font-semibold text-gray-800">Product ID:</span> {product["Product ID"]}</p>
-            <p><span className="font-semibold text-gray-800">Shop SKU:</span> {product["Shop SKU"]}</p>
+            <p><span className="font-semibold ">Product ID:</span> {product["Product ID"]}</p>
+            <p><span className="font-semibold ">Shop SKU:</span> {product["Shop SKU"]}</p>
 
             <div className="col-span-2 flex items-center gap-4 pt-4">
               <span className="font-bold uppercase tracking-widest text-[10px] text-gray-400">Share This:</span>
