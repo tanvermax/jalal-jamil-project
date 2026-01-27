@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
-import { useSendOtpMutation, useVerifyOtpMutation } from "@/redux/features/auth/auth.api";
+// import { useSendOtpMutation, useVerifyOtpMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dot } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -19,8 +19,8 @@ export default function Veryfy() {
     const [email] = useState(location.state)
     const [timer, setTimer] = useState(120)
     const [confirm, setConfirm] = useState(false);
-    const [sendOtp] = useSendOtpMutation();
-    const [verifyOtp] = useVerifyOtpMutation();
+    // const [sendOtp] = useSendOtpMutation();
+    // const [verifyOtp] = useVerifyOtpMutation();
 
     const FormSchema = z.object({
         pin: z.string().min(6, {
@@ -48,21 +48,21 @@ export default function Veryfy() {
 
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        const toastId = toast.loading("Verifying OTP...");
+        // const toastId = toast.loading("Verifying OTP...");
 
-        const userInfo = {
-            email,
-            otp: data.pin
-        }
+        // const userInfo = {
+        //     email,
+        //     otp: data.pin
+        // }
         try {
-            const res = await verifyOtp(userInfo).unwrap();
-            console.log(res.success)
-            if (res.success) {
-                navigate("/")
-                console.log("OTP Verifyed successfully")
+            // const res = await verifyOtp(userInfo).unwrap();
+            // console.log(res.success)
+            // if (res.success) {
+            //     navigate("/")
+            //     console.log("OTP Verifyed successfully")
 
-                toast.success("OTP Verifyed successfully", { id: toastId });
-            }
+            //     toast.success("OTP Verifyed successfully", { id: toastId });
+            // }
         } catch (error) {
             console.log(error)
         }
@@ -70,17 +70,17 @@ export default function Veryfy() {
 
     const handleSendOtp = async () => {
 
-        try {
-            const res = await sendOtp({ email: email }).unwrap();
-            console.log(res.success)
-            if (res.success) {
-                toast.success("OTP sent successfully to your email");
-                setConfirm(true);
-                setTimer(120)
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        // try {
+        //     const res = await sendOtp({ email: email }).unwrap();
+        //     console.log(res.success)
+        //     if (res.success) {
+        //         toast.success("OTP sent successfully to your email");
+        //         setConfirm(true);
+        //         setTimer(120)
+        //     }
+        // } catch (error) {
+        //     console.log(error)
+        // }
 
     }
     useEffect(() => {

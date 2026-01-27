@@ -13,12 +13,12 @@ interface IProps {
 export default function CommonLayout({ children }: IProps) {
     return (
         <div className="min-h-screen  flex flex-col">
-           <div className="sticky  top-0 z-40 container mx-auto  px-4 md:px-6 bg-white dark:bg-[#09090B]">
-             <Navber  />
-           </div>
-            <div className="grow-1 container mx-auto px-4 md:px-6">
-                      <ToastContainer />
-                
+            <div className="sticky  top-0 z-40    bg-white dark:bg-[#09090B]">
+                <Navber />
+            </div>
+            <div className=" ">
+                <ToastContainer />
+
                 {children}
                 <Toaster />
             </div>

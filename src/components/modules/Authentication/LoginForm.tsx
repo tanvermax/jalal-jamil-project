@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form"
-import { useLoginMutation } from "@/redux/features/auth/auth.api"
+// import { useLoginMutation } from "@/redux/features/auth/auth.api"
 import { Link, useNavigate } from "react-router"
 import { toast } from "sonner"
 import config from "@/config"
@@ -15,7 +15,7 @@ export function LoginForm({
 
   const form = useForm();
   const navigate = useNavigate();
-  const [login] = useLoginMutation();
+  // const [login] = useLoginMutation();
 
 
 
@@ -24,16 +24,16 @@ export function LoginForm({
     const date  = new Date();
     console.log("date",date)
     try {
-      const res = await login(data).unwrap();
-      console.log(res)
+      // const res = await login(data).unwrap();
+      // console.log(res)
       navigate("/")
-      toast("Login successful", {
-        description: `Welcome back, ${res?.data?.user?.email}. Logged in at ${date.toLocaleString()}`,
-        action: {
-          label: "Undo",
-          onClick: () => console.log("Undo"),
-        },
-      })
+      // toast("Login successful", {
+      //   description: `Welcome back, ${res?.data?.user?.email}. Logged in at ${date.toLocaleString()}`,
+      //   action: {
+      //     label: "Undo",
+      //     onClick: () => console.log("Undo"),
+      //   },
+      // })
       // navigate("/")
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
