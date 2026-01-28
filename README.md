@@ -1,4 +1,4 @@
-# JCSTRADING - Management Application
+# JALAL JAMIL PROJECT - Management Application
 
 A robust management application built with the MERN/Vite stack. This project focuses on efficient data handling and a clean user interface.
 
