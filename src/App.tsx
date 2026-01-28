@@ -1,7 +1,7 @@
 import { Outlet, ScrollRestoration } from "react-router"
 import CommonLayout from "./components/layout/CommoneLayout"
 import { ToastContainer} from 'react-toastify';
-
+import {  HelmetProvider } from 'react-helmet-async';
 
 
 function App() {
@@ -11,13 +11,13 @@ if ('scrollRestoration' in window.history) {
 }
   // console.log(genarateRoutes(adminSidebarItem))
   return (
+    <HelmetProvider>
     <CommonLayout>
       <ScrollRestoration />
       <ToastContainer />
-
       <Outlet />
-
     </CommonLayout>
+    </HelmetProvider>
   )
 }
 

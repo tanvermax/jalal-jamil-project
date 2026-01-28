@@ -2,7 +2,7 @@ import {
   BoltIcon,
   BookOpenIcon,
   Layers2Icon,
-  LogOutIcon,
+  // LogOutIcon,
 
   UserPenIcon,
 } from "lucide-react"
@@ -24,8 +24,8 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import { UserRound } from "lucide-react"
-import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api"
-import { useAppDispatch } from "@/redux/hook"
+// import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api"
+// import { useAppDispatch } from "@/redux/hook"
 import { Link } from "react-router"
 
 // import UserIcon from "../ui/userIcon";
@@ -41,13 +41,13 @@ interface UserMenuProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function UserMenu({ userData }: UserMenuProps) {
-  const [logout] = useLogoutMutation();
-  const dispatch = useAppDispatch();
-  const handlelogout = async () => {
-    await logout(undefined);
-    dispatch(authApi.util.resetApiState());
+  // const [logout] = useLogoutMutation();
+  // const dispatch = useAppDispatch();
+  // const handlelogout = async () => {
+  //   await logout(undefined);
+  //   dispatch(authApi.util.resetApiState());
 
-  }
+  // }
   // console.log(userData)
   return (
     <DropdownMenu>
@@ -129,8 +129,8 @@ export default function UserMenu({ userData }: UserMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
 
-          <Button onClick={handlelogout}>
-            <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />logout</Button>
+          {/* <Button onClick={handlelogout}>
+            <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />logout</Button> */}
           {/* <span>Logout</span> */}
         </DropdownMenuItem>
       </DropdownMenuContent>

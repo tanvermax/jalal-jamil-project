@@ -3,14 +3,14 @@ import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
+  // DropdownMenuContent,
+  // DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useTheme } from "@/hooks/useTheme"
+// import { useTheme } from "@/hooks/useTheme"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  // const { setTheme } = useTheme()
 
   return (
     <DropdownMenu>
@@ -21,7 +21,7 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      {/* <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
           Light
         </DropdownMenuItem>
@@ -31,7 +31,7 @@ export function ModeToggle() {
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System
         </DropdownMenuItem>
-      </DropdownMenuContent>
+      </DropdownMenuContent> */}
     </DropdownMenu>
   )
 }

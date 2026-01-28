@@ -3,12 +3,12 @@ import About from "@/pages/About";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import Veryfy from "@/pages/Veryfy";
+// import Veryfy from "@/pages/Veryfy";
 import { createBrowserRouter } from "react-router";
 import DeluxeError from "@/components/ErrorComponent/Error";
-import OrderTrack from "@/pages/User/OrderTrack/Ordertack";
-import Help from "@/pages/Help/Help";
-import OrderSuccessPage from "@/components/layout/OrderSuccess/OrderSuccessPage";
+import HService from "@/pages/Service/HService";
+import Companies from "@/pages/Home/Companies";
+import Contact from "@/pages/Home/Contact";
 
 
 const router = createBrowserRouter([
@@ -22,21 +22,24 @@ const router = createBrowserRouter([
                 Component: About,
             },
             {
-                path: "thankyou",
-                Component: OrderSuccessPage,
-            }, 
+                path:"companies",
+                Component:Companies
+            },
+            {
+                path:"service",
+                Component:HService
+            },
+            {
+                path:"contact",
+                Component:Contact
+            },
+            
             {
                 path: "/",
                 Component: Home,
             },
-            {
-                path:"ordertrack",
-                Component:OrderTrack
-            },
-            {
-                path:"help",
-                Component:Help
-            }
+            
+            
         ]
     }
     ,
@@ -53,13 +56,13 @@ const router = createBrowserRouter([
         errorElement: <DeluxeError />,
 
     },
-    {
-        Component: Veryfy,
-        path: "/verify",
-        errorElement: <DeluxeError />,
+    // {
+    //     Component: Veryfy,
+    //     path: "/verify",
+    //     errorElement: <DeluxeError />,
 
-    }
-    ,
+    // }
+    // ,
  
 ])
 
