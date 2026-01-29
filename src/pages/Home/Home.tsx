@@ -5,6 +5,7 @@ import Hero from "./Hero";
 import Services from "./Services";
 import News from "./News";
 import CEOMessage from "@/components/layout/CEOMessage";
+import MDMessage from "@/components/layout/MDMessage";
 
 
 
@@ -41,6 +42,7 @@ export default function Home() {
       <Companies />
       <News/>
       <CEOMessage/>
+      <MDMessage/>
       <Services />
 
 

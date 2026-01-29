@@ -40,7 +40,7 @@ export default function Contact() {
                 <Input type="email" placeholder="Email Address" aria-label="Email" required />
                 <Input type="text" placeholder="Subject" aria-label="Subject" required />
                 <Textarea placeholder="Your Message" aria-label="Message" rows={5} required />
-                <Button type="submit" className="bg-emerald-700 hover:bg-emerald-600">
+                <Button type="submit" className="bg-[#BAA26D] hover:bg-emerald-600">
                   Send Message
                 </Button>
               </form>
@@ -53,15 +53,15 @@ export default function Contact() {
               <CardContent className="p-6 space-y-4">
                 <h3 className="text-xl font-semibold mb-4">Our Contact Info</h3>
                 <div className="flex items-start gap-4">
-                  <MapPin className="h-6 w-6 text-emerald-700 mt-1" />
+                  <MapPin className="h-6 w-6 text-[#BAA26D] mt-1" />
                   <p>1234 Riyadh Street, Riyadh, Saudi Arabia</p>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Phone className="h-6 w-6 text-emerald-700 mt-1" />
+                  <Phone className="h-6 w-6 text-[#BAA26D] mt-1" />
                   <p>+966 55 123 4567</p>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Mail className="h-6 w-6 text-emerald-700 mt-1" />
+                  <Mail className="h-6 w-6 text-[#BAA26D] mt-1" />
                   <p>info@jalaljamil.com</p>
                 </div>
               </CardContent>

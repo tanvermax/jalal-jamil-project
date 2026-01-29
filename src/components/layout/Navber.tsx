@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import logo from "../../assets/images/logo.png";
+// import logo from "../../assets/images/logo.png";
 import logo1 from "../../assets/images/JALAL JAMIL PROJECT COMPANY.png";
 
 import {
@@ -57,8 +57,8 @@ export default function Navbar() {
 
         {/* Logo Section */}
         <div className="font-bold   text-lg w-72 ">
-          <img src={logo1} className="object-cover h-24 hidden md:block" alt="Logo Desktop" />
-          <img src={logo} className="object-cover  w-20 py-2 md:hidden block" alt="Logo Mobile" />
+          <img src={logo1} className="object-cover md:h-24 h-16 " alt="Logo Desktop" />
+          {/* <img src={logo} className="object-cover  w-20 py-2 md:hidden block" alt="Logo Mobile" /> */}
         </div>
 
         {/* Desktop Navigation */}
@@ -94,7 +94,7 @@ export default function Navbar() {
                   key={item.label}
                   onClick={() => setActive(item.label)}
                   className={`cursor-pointer px-5 py-2 rounded-md transition-all duration-300 ${active === item.label
-                      ? "bg-green-700 text-white shadow-md" // Active Style
+                      ? "bg-[#B8A471] text-white shadow-md" // Active Style
                       : "text-gray-600 hover:bg-gray-100"    // Inactive Style
                     }`}
                 >
