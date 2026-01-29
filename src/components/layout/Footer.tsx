@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import logo from "../../assets/images/logodark.jpg"
 
 export default function Footer() {
   return (
@@ -10,9 +11,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           {/* Company Info */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">
-              Jalal Jamil Project Company
-            </h3>
+            <img src={logo} alt="" />
             <p className="text-sm leading-relaxed">
               A Saudi-based group of companies delivering construction,
               logistics, food services, and manpower solutions across
