@@ -23,14 +23,14 @@ export default function MDMessage() {
   };
 
   return (
-   <section className="py-20 bg-white">
-    <script
+    <section className="py-20 bg-white">
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Text First (Authority & Clarity) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -112,6 +112,7 @@ export default function MDMessage() {
                 alt="Managing Director of Jalal Jamil Project Company"
                 className="object-cover"
               />
+              
             </div>
           </motion.div>
 

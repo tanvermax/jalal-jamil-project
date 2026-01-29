@@ -94,7 +94,7 @@ export default function CEOMessage() {
                 className="flex flex-col items-center lg:items-start gap-1"
               >
                 <span className="text-xl lg:text-2xl font-bold">
-                  Jalal Uddin Rubel
+                  Jalal Uddin 
                 </span>
                 <span className="text-xs uppercase tracking-widest text-white/80 font-semibold">
                   Founder & CEO , Jalal Jamil Project company
