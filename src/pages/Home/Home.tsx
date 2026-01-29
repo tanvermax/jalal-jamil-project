@@ -4,6 +4,7 @@ import Companies from "./Companies";
 import Hero from "./Hero";
 import Services from "./Services";
 import News from "./News";
+import CEOMessage from "@/components/layout/CEOMessage";
 
 
 
@@ -39,6 +40,7 @@ export default function Home() {
       <About />
       <Companies />
       <News/>
+      <CEOMessage/>
       <Services />
 
 

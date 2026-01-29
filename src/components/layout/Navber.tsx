@@ -68,8 +68,8 @@ export default function Navbar() {
               to={item.href}
               key={item.label}
               onClick={() => setActive(item.label)}
-              className={`cursor-pointer px-5 py-2 rounded-md transition-all duration-300 ${active === item.label
-                  ? "bg-green-700 text-white shadow-md" // Active Style
+              className={`cursor-pointer px-5 py-2  transition-all duration-300 ${active === item.label
+                  ? "bg-[#BAA26D] text-white shadow-md" // Active Style
                   : "text-gray-600 hover:bg-gray-100"    // Inactive Style
                 }`}
             >
