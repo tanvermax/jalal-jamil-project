@@ -3,14 +3,14 @@ import { Separator } from "@/components/ui/separator";
 export default function Footer() {
   return (
 
-    
+
     <footer className="bg-[#BAA26D] text-gray-300">
-      <div className="max-w-7xl mx-auto px-6 py-16 text-black">
+      <div className="max-w-7xl mx-auto px-6 py-16 text-white">
         {/* Top Section */}
         <div className="grid gap-10 md:grid-cols-4">
           {/* Company Info */}
           <div>
-            <h3 className="text-lg font-semibold text-black mb-4">
+            <h3 className="text-lg font-semibold text-white mb-4">
               Jalal Jamil Project Company
             </h3>
             <p className="text-sm leading-relaxed">
@@ -22,21 +22,21 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-black mb-4">
+            <h4 className="font-semibold text-white mb-4">
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm">
-              <li className="hover:text-black cursor-pointer">Home</li>
-              <li className="hover:text-black cursor-pointer">About Us</li>
-              <li className="hover:text-black cursor-pointer">Our Companies</li>
-              <li className="hover:text-black cursor-pointer">Services</li>
-              <li className="hover:text-black cursor-pointer">Contact</li>
+              <li className="hover:text-white cursor-pointer">Home</li>
+              <li className="hover:text-white cursor-pointer">About Us</li>
+              <li className="hover:text-white cursor-pointer">Our Companies</li>
+              <li className="hover:text-white cursor-pointer">Services</li>
+              <li className="hover:text-white cursor-pointer">Contact</li>
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold text-black mb-4">
+            <h4 className="font-semibold text-white mb-4">
               Our Services
             </h4>
             <ul className="space-y-2 text-sm">
@@ -49,13 +49,13 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-semibold text-black mb-4">
+            <h4 className="font-semibold text-white mb-4">
               Contact
             </h4>
             <ul className="space-y-2 text-sm">
-              <li>📍 Saudi Arabia</li>
-              <li>📞 +966 XX XXX XXXX</li>
-              <li>✉️ info@jalaljamil.com</li>
+              <li>📍 Saudi Arabia, Riyad</li>
+              <li>📞 +966 55 351 1821</li>
+              <li>✉️ Jalal.enterprise@yahoo.com</li>
             </ul>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function Footer() {
         <Separator className="my-10 bg-gray-700" />
 
         {/* Bottom Bar */}
-        <div className="flex  flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-900">
+        <div className="flex  flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-100">
           <p>
             © {new Date().getFullYear()} Jalal Jamil Project Company.
             All rights reserved.
@@ -72,11 +72,11 @@ export default function Footer() {
 
           <p>
             Designed & Developed by <a
-                                href="https://portfolio-e021a.web.app"
-                                className="font-medium text-white hover:underline underline-offset-4"
-                            >
-                               Shafayet_Hossain_Tanvir
-                            </a>
+              href="https://portfolio-e021a.web.app"
+              className="font-bold text-white hover:underline underline-offset-4"
+            >
+              Shafayet_Hossain_Tanvir
+            </a>
           </p>
         </div>
       </div>

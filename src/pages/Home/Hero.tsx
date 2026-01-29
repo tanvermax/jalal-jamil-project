@@ -41,6 +41,7 @@ export default function Hero() {
         imgsize="md:h-[65vh] h-[40vh]  w-full"
         data={slides}
       />
+     
     </section>
   );
 }

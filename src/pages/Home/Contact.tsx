@@ -58,11 +58,11 @@ export default function Contact() {
                 </div>
                 <div className="flex items-start gap-4">
                   <Phone className="h-6 w-6 text-[#BAA26D] mt-1" />
-                  <p>+966 55 123 4567</p>
+                  <p>+966 55 351 1821</p>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail className="h-6 w-6 text-[#BAA26D] mt-1" />
-                  <p>info@jalaljamil.com</p>
+                  <p>Jalal.enterprise@yahoo.com</p>
                 </div>
               </CardContent>
             </Card>
